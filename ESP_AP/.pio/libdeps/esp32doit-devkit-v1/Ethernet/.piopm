@@ -1,0 +1,1 @@
+{"type": "library", "name": "Ethernet", "version": "2.0.0+sha.3ec5f4e", "spec": {"owner": null, "id": null, "name": "arduino-esp32", "requirements": null, "uri": "git+https://github.com/espressif/arduino-esp32.git"}}

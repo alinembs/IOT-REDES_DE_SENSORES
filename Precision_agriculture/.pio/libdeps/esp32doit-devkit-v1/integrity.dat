@@ -1,0 +1,6 @@
+arduino-libraries/Arduino_JSON @ 0.1.0
+roboticsbrno/ServoESP32@^1.0.3
+paulstoffregen/OneWire@^2.3.7
+https://github.com/espressif/arduino-esp32.git
+milesburton/DallasTemperature@^3.11.0
+https://github.com/me-no-dev/ESPAsyncWebServer.git
