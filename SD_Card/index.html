@@ -23,10 +23,10 @@
 
     </div>
     <div class="menu">
-        <button class="tablink" onclick="openPage('corpo-dados', this, '#0d0f27')" id="defaultOpen">Sensores</button>
-        <button class="tablink" onclick="openPage('atuadores', this, 'rgb(48, 17, 7)')">Atuadores</button>
-       <button class="tablink" onclick="openPage('Add', this, 'rgb(46, 15, 43)')">Gráfico de Dados</button> 
-       <button class="tablink" onclick="openPage('config', this, 'rgb(9, 51, 9)')"> ⚙️ Configuração</button>
+        <button class="tablink" onclick="openPage('corpo-dados', this, '#bbc9c9')" id="defaultOpen">Sensores</button>
+        <button class="tablink" onclick="openPage('atuadores', this, ' #bbc9c9')">Atuadores</button>
+       <button class="tablink" onclick="openPage('Add', this, ' #bbc9c9')">Gráfico de Dados</button> 
+       <button class="tablink" onclick="openPage('config', this, ' #bbc9c9')"> ⚙️ Configuração</button>
         
     </div>
 
@@ -77,8 +77,11 @@
 
     </div>
     <div id="config" class="modo-1" style="display: none">
-
+              
         <div id="body" class="eyes-off">
+            <li class="tg-list-item" id="list_b1">
+                <h4 class="modo">Exportar Dados:</h4>
+               <button class='exportar' style="--clr:#39FF14"><span>CSV</span><i></i></button>
             <li class="tg-list-item" id="list_b1">
                 <h4 class="modo">Modo:</h4>
                 <input class="tgl tgl-flip" id="btn_mode" type="checkbox" />

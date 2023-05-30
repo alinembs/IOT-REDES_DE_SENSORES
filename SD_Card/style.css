@@ -51,7 +51,8 @@ body {
   -webkit-transform: translateZ(0);
   backface-visibility: hidden;
   transform: translateZ(0);
-  background: #1B2030 url(/img/markus-spiske-sFydXGrt5OA-unsplash.jpg) 50% 0 no-repeat;
+  background:   #bbc9c9 url(/img/markus-spiske-sFydXGrt5OA-unsplash.jpg) 50% 0 no-repeat;
+  /*background: #1B2030 url(/img/markus-spiske-sFydXGrt5OA-unsplash.jpg) 50% 0 no-repeat;*/
   background-size: 100%;
   background-attachment: fixed;
   animation: grow 360s linear 10ms infinite;
@@ -114,19 +115,23 @@ body {
 }
 
 #corpo-dados {
-  background-color: #0d0f27;
+  /*background-color: #0d0f27;*/
+   background-color: #bbc9c9;
 }
 
 #config {
-  background-color: rgb(9, 51, 9);
+  /*background-color: rgb(9, 51, 9);*/
+  background-color: #bbc9c9;
 }
 
 #atuadores {
-  background-color: rgb(48, 17, 7);
+  /*background-color: rgb(48, 17, 7);*/
+  background-color: #bbc9c9;
 }
 
 #Add {
-  background-color: rgb(46, 15, 43);
+ /* background-color: rgb(46, 15, 43);*/
+  background-color: #bbc9c9;
 }
 
 
@@ -338,7 +343,7 @@ li {
 }
 
 .modo {
-  color: #999;
+  color: #030101;
 }
 
 .tgl {
@@ -478,7 +483,7 @@ li {
   justify-content: center;
   text-align: center;
   font-size: 6em;
-  color: #999;
+  color: #0f0b0b;
   font-weight: 400;
 }
 
@@ -823,7 +828,7 @@ small {
 
 .exportar {
   position: relative;
-  background: #444;
+  background:  #777;
   color: #fff;
   text-decoration: none;
   text-transform: uppercase;
@@ -847,7 +852,7 @@ small {
   content: "";
   position: absolute;
   inset: 2px;
-  background: #272822;
+  background:  #ff3a19;
 }
 
 .exportar span {
@@ -864,8 +869,8 @@ small {
 .exportari::before {
   content: "";
   position: absolute;
-  width: 10px;
-  height: 2px;
+  width: 20rem;
+  height: 2rem;
   left: 80%;
   top: -2px;
   border: 2px solid var(--clr);
@@ -874,7 +879,7 @@ small {
 }
 
 .exportar:hover i::before {
-  width: 15px;
+  width: 10px;
   left: 20%;
   animation: move 3s infinite;
 }
@@ -933,7 +938,8 @@ small {
 
   height: 65vw;
   min-height: 100px;
-  background-color: #151823;
+  /*background-color: #151823;*/
+  background-color:  #bbc9c9;
   min-width: 300px;
 
 }
@@ -941,7 +947,7 @@ small {
 
 .footer__title {
   font-size: 1.8rem;
-  color: #fff;
+  color: #050411;
   font-weight: 500;
   margin-bottom: 2rem;
 }
@@ -964,11 +970,12 @@ small {
 }
 
 .footer__list-link:hover {
-  color: #fff;
+  color: #050411;
+  /*color: #fff;*/
 }
 
 .project__info {
-  color: #666873;
+  color: #070a16;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -980,7 +987,8 @@ small {
 }
 
 .company__logo {
-  color: #fff;
+  color: #6e37a5;
+  /*color: #fff;*/
 }
 
 .project__info ul {
@@ -3156,4 +3164,4 @@ small {
   .company__logo {
     font-size: 1.5em;
 }
-  
+}
