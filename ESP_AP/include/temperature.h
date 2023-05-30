@@ -10,7 +10,6 @@ DallasTemperature sensors(&oneWire);
 String temperatureC = "";
 String temperatureF = "";
 
-
 String readDSTemperatureC()
 {
 
@@ -19,13 +18,13 @@ String readDSTemperatureC()
 
   if (tempC == -127.00)
   {
-    Serial.println("Failed to read from DS18B20 sensor");
+    // Serial.println("Failed to read from DS18B20 sensor");
     return "--";
   }
   else
   {
-    //Serial.print("Temperature Celsius: ");
-   // Serial.println(tempC);
+    Serial.print("Temperature Celsius: ");
+    Serial.println(tempC);
   }
   return String(tempC);
 }
@@ -38,13 +37,13 @@ String readDSTemperatureF()
 
   if (int(tempF) == -196)
   {
-    Serial.println("Failed to read from DS18B20 sensor");
+    // Serial.println("Failed to read from DS18B20 sensor");
     return "--";
   }
   else
   {
-   // Serial.print("Temperature Fahrenheit: ");
-    //Serial.println(tempF);
+    // Serial.print("Temperature Fahrenheit: ");
+    // Serial.println(tempF);
   }
   return String(tempF);
 }

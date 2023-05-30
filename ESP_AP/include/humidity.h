@@ -65,14 +65,23 @@ String writeSolo(float percent)
 
 String readDSHumidity()
 {
-  int value = analogRead(AOUT_PIN);
+  int value_media = 0;
+  float media;
+  int indice;
+  for (indice= 0;indice<5;++indice)
+  {
+    delay(500);
+    int value = analogRead(AOUT_PIN);
+    value_media =  value_media + value;
+  }
+  media = value_media/5;
   //Serial.print("Humidity: ");
-  //Serial.println(value);
-  float percent = Percent_Moisture(value);
+  //Serial.println(media);
+  float percent = Percent_Moisture(media);
   solo = writeSolo(percent);
   if ((percent < -1) & (percent > 100))
   {
-    Serial.println("Failed to read from Humidity sensor");
+   // Serial.println("Failed to read from Humidity sensor");
     return "--";
   }
   else

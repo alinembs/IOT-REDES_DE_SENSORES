@@ -121,7 +121,7 @@ void handleServoArg()
   { // Parameter not found
 
     message = "Argument not found";
-    estado_servo = writeSERVO(0);
+    //estado_servo = writeSERVO(0);
   }
   else
   { // Parameter found
@@ -148,6 +148,7 @@ void handleBombArg()
 
     message += server.arg(PARAM_BOMBA); // Gets the value of the query parameter
   }
+ 
   Bomba_Agua(message);
   server.send(200, "text / plain", "OK"); // Returns the HTTP response
 }
@@ -177,7 +178,7 @@ void init_Server()
   // Funções de Pegar dados Web
   server.on("/update", HTTP_GET, handleModeArg);
   server.on("/slider", HTTP_GET, handleServoArg);
-  server.on("/update", HTTP_GET, handleBombArg);
+  server.on("/bomba", HTTP_GET, handleBombArg);
 
   // Adiciona a função "handle_not_found" quando o servidor estiver offline
   server.onNotFound(handleNotFound);
