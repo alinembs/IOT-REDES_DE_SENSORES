@@ -241,6 +241,8 @@ function SubmitServo() {
   xhr.send();
 
 }
+
+
 function toggleCheckbox(element) {
   var xhr = new XMLHttpRequest();
   if (element.checked) { xhr.open("GET", "/bomba?relay=ON", true); }

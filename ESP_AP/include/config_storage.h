@@ -8,7 +8,11 @@
 #include <ESPmDNS.h>
 
 
+
 WebServer server(80);
+
+
+
 
 // Manipulador para páginas não encontradas
 void handleNotFound()
@@ -132,3 +136,15 @@ bool loadFromSPIFFS(String path, String dataType)
   }
   return true;
 }
+
+void SD_file_download(String filename) {
+  File download = SD.open("/" + filename);
+  if (download) {
+    server.sendHeader("Content-Type", "text/text");
+    server.sendHeader("Content-Disposition", "attachment; filename=" + filename);
+    server.sendHeader("Connection", "close");
+    server.streamFile(download, "application/octet-stream");
+    download.close();
+  } 
+}
+

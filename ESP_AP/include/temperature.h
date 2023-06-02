@@ -23,8 +23,8 @@ String readDSTemperatureC()
   }
   else
   {
-    Serial.print("Temperature Celsius: ");
-    Serial.println(tempC);
+   // Serial.print("Temperature Celsius: ");
+    //Serial.println(tempC);
   }
   return String(tempC);
 }

@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt">
 
 <head>
@@ -81,7 +81,11 @@
         <div id="body" class="eyes-off">
             <li class="tg-list-item" id="list_b1">
                 <h4 class="modo">Exportar Dados:</h4>
-               <button class='exportar' style="--clr:#39FF14"><span>CSV</span><i></i></button>
+                <form action="/download" method="post">
+                <button  type = 'submit' name = 'download' value="teste.csv" class="button success" id="btncsv">ENVIAR</button> 
+                </form>
+               
+             <!-- <button class='exportar' style="--clr:#39FF14" id="btn1" onclick="SubmitServo()"><span>CSV</span><i></i></button>-->
             <li class="tg-list-item" id="list_b1">
                 <h4 class="modo">Modo:</h4>
                 <input class="tgl tgl-flip" id="btn_mode" type="checkbox" />
@@ -93,7 +97,8 @@
                     <span id="rangeValue">0cm</span>
                     <Input class="range" id="positionServo" type="range" name="" value="0" min="0" max="180"
                         onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"></Input>
-                    <button class="button success" id="btn1" onclick="SubmitServo()">ENVIAR</button>
+                     <button class='exportar' style="--clr:#39FF14" id="btn1" onclick="SubmitServo()"><span>Enviar</span><i></i></button>
+                        <!--  <button class="button success" id="btn1" onclick="SubmitServo()">ENVIAR</button>-->
                 </div>
 
                 <div id="bomba" class="p-control">

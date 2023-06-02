@@ -1,0 +1,4 @@
+paulstoffregen/OneWire@^2.3.7
+milesburton/DallasTemperature@^3.11.0
+me-no-dev/ESP Async WebServer@^1.2.3
+ottowinter/ESPAsyncWebServer-esphome@^3.0.0
