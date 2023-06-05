@@ -26,6 +26,7 @@ String readDSTemperatureC()
    // Serial.print("Temperature Celsius: ");
     //Serial.println(tempC);
   }
+  temperatureC = String(tempC);
   return String(tempC);
 }
 
@@ -45,5 +46,6 @@ String readDSTemperatureF()
     // Serial.print("Temperature Fahrenheit: ");
     // Serial.println(tempF);
   }
+  temperatureF = String(tempF);
   return String(tempF);
 }

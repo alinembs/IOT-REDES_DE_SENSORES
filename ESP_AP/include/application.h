@@ -6,7 +6,7 @@ void init_App()
      Serial.println("Inicializando Aplicação");
     delay(1000);
     // TIME
-
+    
     // INCIANDO AS PORTAS
     Serial.println("Inicializando as Portas /PIN");
     myservo.attach(ServoPin);
@@ -14,12 +14,7 @@ void init_App()
     //sensors.begin();
 
     // TEMPERATURE
-    temperatureC = readDSTemperatureC();
-    temperatureF = readDSTemperatureF();
-
     // Humidity
-
-    humidity = readDSHumidity();
 
     // Servo Bomb
     Bomba_Agua("OFF");

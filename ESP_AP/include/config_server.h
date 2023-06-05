@@ -170,24 +170,32 @@ void File_Download()
     SD_file_download(file);
   }
   Serial.println(file);*/
- if (server.args() > 0) // Arguments were received, ignored if there are not arguments
+  if (server.args() > 0) // Arguments were received, ignored if there are not arguments
+  {
+    // Serial.println(server.arg(0));
+
+    String Order = server.arg(0);
+    // Serial.println(Order);
+
+    if (Order.indexOf("download") >= 0)
     {
-     // Serial.println(server.arg(0));
-
-      String Order = server.arg(0);
-      //Serial.println(Order);
-
-      if (Order.indexOf("download") >= 0)
-      {
-        Order.remove(0, 10);
-        SD_file_download(Order);
-        Serial.println("Download Feito com Sucesso!");
-      }
-
+      Order.remove(0, 10);
+      SD_file_download(Order);
+      Serial.println("Download Feito com Sucesso!");
     }
+  }
+}
 
-
-
+void salve_data()
+{
+  /* getTimeStamp();
+   data = String(dayStamp) + ";" + String(timeStamp) + ";" +
+          temperatureC + ";" + temperatureF + " ;" + humidity + "\r\n";*/
+  String data;
+  data = "Data de Hj: ;" +
+         temperatureC + ";" + temperatureF + " ;" + humidity;
+  appendFile(SD, "/teste.csv", data.c_str());
+  server.send(200, "text / plain", "OK"); // Returns the HTTP response
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -221,6 +229,7 @@ void init_Server()
   // Função para Baixar dados cvs
   server.on("/", HTTP_POST, File_Download);
   // Chamdas extras
+  server.on("/checkpoint", HTTP_GET, salve_data);
   // server.on("/favicon.ico", HTTP_GET,handleSN);
   //  Adiciona a função "handle_not_found" quando o servidor estiver offline
   server.onNotFound(handleNotFound);

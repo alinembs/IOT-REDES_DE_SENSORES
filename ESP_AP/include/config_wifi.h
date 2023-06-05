@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <WiFiClient.h>
 
+
 const char *ssid = "ESP-DASHBOARD";
 const char *password = "123456789";
 
@@ -29,3 +30,5 @@ void init_Wifi_AP()
     Serial.print("AP IP address: ");
     Serial.println(myIP);
 }
+
+

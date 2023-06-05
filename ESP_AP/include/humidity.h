@@ -90,5 +90,6 @@ String readDSHumidity()
     // percent = 0;
     //Serial.println(percent);
   }
+  humidity = String(percent);
   return String(percent);
 }

@@ -8,11 +8,18 @@
 #include <ESPmDNS.h>
 
 
-
 WebServer server(80);
 
 
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP);
+
+String formattedDate;
+String dayStamp;
+String timeStamp;
 
 // Manipulador para páginas não encontradas
 void handleNotFound()
@@ -56,7 +63,6 @@ void initSDCard()
   uint64_t cardSize = SD.cardSize() / (1024 * 1024);
   Serial.printf("SD Card Size: %lluMB\n", cardSize);
 }
-
 
 void initSPIFFS()
 {
@@ -137,14 +143,75 @@ bool loadFromSPIFFS(String path, String dataType)
   return true;
 }
 
-void SD_file_download(String filename) {
+void SD_file_download(String filename)
+{
   File download = SD.open("/" + filename);
-  if (download) {
+  if (download)
+  {
     server.sendHeader("Content-Type", "text/text");
     server.sendHeader("Content-Disposition", "attachment; filename=" + filename);
     server.sendHeader("Connection", "close");
     server.streamFile(download, "application/octet-stream");
     download.close();
-  } 
+  }
 }
 
+void writeFile(fs::FS &fs, const char *path, const char *message)
+{
+  Serial.printf("Writing file: %s\n", path);
+
+  File file = fs.open(path, FILE_WRITE);
+  if (!file)
+  {
+    Serial.println("Failed to open file for writing");
+    return;
+  }
+  if (file.print(message))
+  {
+    Serial.println("File written");
+  }
+  else
+  {
+    Serial.println("Write failed");
+  }
+  file.close();
+}
+
+void appendFile(fs::FS &fs, const char *path, const char *message)
+{
+  Serial.printf("Appending to file: %s\n", path);
+
+  File file = fs.open(path, FILE_APPEND);
+  if (!file)
+  {
+    Serial.println("Failed to open file for appending");
+    return;
+  }
+  if (file.println(message))
+  {
+    Serial.println("Message appended");
+  }
+  else
+  {
+    Serial.println("Append failed");
+  }
+  file.close();
+}
+
+void init_Date_Time()
+{
+    timeClient.begin();
+    timeClient.setTimeOffset(39600);
+}
+
+void getTimeStamp()
+{
+    while (!timeClient.update())
+    {
+        timeClient.forceUpdate();
+    }
+    formattedDate = timeClient.getFormattedDate();
+    int splitT = formattedDate.indexOf("T");
+    dayStamp = formattedDate.substring(0, splitT);
+    timeStamp = formattedDate.substring(splitT + 1, formattedDate.length() - 1);
+}
