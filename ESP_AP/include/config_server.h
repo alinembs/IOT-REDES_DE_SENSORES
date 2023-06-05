@@ -159,7 +159,7 @@ void handleSN()
 void File_Download()
 {
   // This gets called twice, the first pass selects the input, the second pass then processes the command line arguments
-  String file = "";
+  /*String file = "";
   if (server.arg(PARAM_FILE) == "")
   { // Arguments were received
     file = "Argument not found";
@@ -169,7 +169,25 @@ void File_Download()
     file += server.arg(PARAM_FILE);
     SD_file_download(file);
   }
-  Serial.println(file);
+  Serial.println(file);*/
+ if (server.args() > 0) // Arguments were received, ignored if there are not arguments
+    {
+     // Serial.println(server.arg(0));
+
+      String Order = server.arg(0);
+      //Serial.println(Order);
+
+      if (Order.indexOf("download") >= 0)
+      {
+        Order.remove(0, 10);
+        SD_file_download(Order);
+        Serial.println("Download Feito com Sucesso!");
+      }
+
+    }
+
+
+
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -201,7 +219,7 @@ void init_Server()
   server.on("/bomba", HTTP_GET, handleBombArg);
 
   // Função para Baixar dados cvs
-  server.on("/download", HTTP_POST, File_Download);
+  server.on("/", HTTP_POST, File_Download);
   // Chamdas extras
   // server.on("/favicon.ico", HTTP_GET,handleSN);
   //  Adiciona a função "handle_not_found" quando o servidor estiver offline
