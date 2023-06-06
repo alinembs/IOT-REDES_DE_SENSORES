@@ -1,5 +1,5 @@
 #include "config_server.h"
-#include "config_wifi.h"
+#include "api.h"
 
 void init_App()
 {
@@ -21,7 +21,8 @@ void init_App()
 
     estado_servo = writeSERVO(0);
     // Incia o Wifi
-    init_Wifi_AP();
+    //init_Wifi_AP();
+    init_Wifi_NM()
     // Incia o Cartão de Memoria
     initSDCard();
     // Inicia o SPIFFS

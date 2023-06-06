@@ -31,4 +31,17 @@ void init_Wifi_AP()
     Serial.println(myIP);
 }
 
+void init_Wifi_NM()
+{
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Conectando ao WiFi...");
+  }
+  Serial.println("Conectado ao WiFi!");
+  IPAddress myIP = WiFi.softIP();
+    Serial.print("AP IP address: ");
+    Serial.println(myIP);
+
+}
 
