@@ -1,2 +1,2 @@
 # IOT-REDES_DE_SENSORES
-Projetos voltados para área de Sistemas Embarcados, IOT e redes de sensores. Usando Microcontrolador ESP-32
+Arquivos utilizados para conectar o ESP32 em um banco de Dados MySql Localmente.
