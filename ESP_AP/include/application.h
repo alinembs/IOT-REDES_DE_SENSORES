@@ -1,5 +1,5 @@
 #include "config_server.h"
-#include "api.h"
+#include "config_wifi.h"
 
 void init_App()
 {
@@ -20,9 +20,11 @@ void init_App()
     Bomba_Agua("OFF");
 
     estado_servo = writeSERVO(0);
+    //Inicia o Relogio
+    init_Date_Time();
     // Incia o Wifi
     //init_Wifi_AP();
-    init_Wifi_NM()
+    init_Wifi_NM();
     // Incia o Cartão de Memoria
     initSDCard();
     // Inicia o SPIFFS

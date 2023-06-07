@@ -7,19 +7,16 @@
 #include <WebServer.h>
 #include <ESPmDNS.h>
 
+#include <HTTPClient.h>
+
+#include <Wire.h>
+#include <RTClib.h>
+
+RTC_DS3231 rtc;
+String data_hora = "";
 
 WebServer server(80);
 
-
-#include <NTPClient.h>
-#include <WiFiUdp.h>
-
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP);
-
-String formattedDate;
-String dayStamp;
-String timeStamp;
 
 // Manipulador para páginas não encontradas
 void handleNotFound()
@@ -200,18 +197,23 @@ void appendFile(fs::FS &fs, const char *path, const char *message)
 
 void init_Date_Time()
 {
-    timeClient.begin();
-    timeClient.setTimeOffset(39600);
+    if (! rtc.begin()) {
+     Serial.println("Não foi possível encontrar RTC");
+     while (1);
+  }
+  rtc.adjust(DateTime(__DATE__, __TIME__));
 }
 
-void getTimeStamp()
+
+void data_now()
 {
-    while (!timeClient.update())
-    {
-        timeClient.forceUpdate();
-    }
-    formattedDate = timeClient.getFormattedDate();
-    int splitT = formattedDate.indexOf("T");
-    dayStamp = formattedDate.substring(0, splitT);
-    timeStamp = formattedDate.substring(splitT + 1, formattedDate.length() - 1);
+ DateTime now = rtc.now();
+
+  // Formato da data: DD/MM/AAAA
+  String data = String(now.year()) + "-" + String(now.month()) + "-" + String(now.day());
+
+  // Formato da hora: HH:MM:SS
+  String hora = String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
+  data_hora = data + ' ' + hora;
+
 }

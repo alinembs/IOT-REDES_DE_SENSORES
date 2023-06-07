@@ -1,5 +1,6 @@
 #include "application.h"
 
+
 void setup()
 {
 
@@ -13,6 +14,6 @@ void loop(void)
 {
   // Clientes --------------
   server.handleClient();
-  delay(5); // allow the cpu to switch to other tasks
-
+  delay(10); // allow the cpu to switch to other tasks
+  
 }

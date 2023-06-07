@@ -1,6 +1,5 @@
-#include <Arduino.h>
 
-#define limit 1295
+#define limite 1295 
 #define min_moisture 4095
 #define max_moisture 2800
 
@@ -17,7 +16,7 @@ String humidity = " ";
 
 float Percent_Moisture(int value)
 {
-  int valor = 100 - ((value - max_moisture) * 100) / limit;
+  int valor = 100 - ((value - max_moisture) * 100) / limite;
   if (valor < -1)
   {
     valor = 0;

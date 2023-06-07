@@ -1,5 +1,5 @@
 // INCLUDE DOS CONFIG
-
+#include <ArduinoJson.h>
 #include "config_storage.h"
 #include "config_app.h"
 
@@ -12,6 +12,53 @@ const char *PARAM_MODE = "state";
 const char *PARAM_SERVO = "value";
 const char *PARAM_BOMBA = "relay";
 const char *PARAM_FILE = "value";
+
+// VARIAVEIS PARA SE COMUNICAR COM API DO BANCO DE DADOS
+const char *apiKey = "API_TESTE";
+const char *apiEndpoint = "http://192.168.83.30:5000/adicionar-dados ";
+
+// MANIPULADOPR PARA ENVIAR OS DADOS PARA BASE DE DADOS
+void handle_conect_api()
+{
+  data_now();
+  if (server.method() == HTTP_POST)
+  {
+
+    DynamicJsonDocument jsonDoc(256);
+    jsonDoc["data_hora"] = data_hora;
+    jsonDoc["temperatura_c"] = temperatureC;
+    jsonDoc["temperatura_f"] = temperatureF;
+    jsonDoc["umidade"] = humidity;
+    String requestBody;
+    serializeJson(jsonDoc, requestBody);
+
+    HTTPClient http;
+    http.begin(apiEndpoint);
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("X-Api-Key", apiKey);
+
+    int httpResponseCode = http.POST(requestBody);
+
+    if (httpResponseCode > 0)
+    {
+      String response = http.getString();
+      Serial.println(response);
+      server.send(200, "text/html", "<h1>Dados enviados com sucesso para a API!</h1>");
+    }
+    else
+    {
+      Serial.printf("Erro na solicitação HTTP: %s\n", http.errorToString(httpResponseCode).c_str());
+      server.send(500, "text/html", "<h1>Erro na solicitação HTTP</h1>");
+    }
+
+    http.end();
+  }
+  else
+  {
+    server.send(405, "text/html", "<h1>Método não permitido</h1>");
+  }
+}
+
 // Manipulador para a página principal
 void handleRoot()
 {
@@ -44,7 +91,8 @@ void handleRootlin()
 }
 void handleRootheader()
 {
-  loadFromSD(SD, "/img/markus-spiske-sFydXGrt5OA-unsplash.jpg", "image/jpg");
+  //loadFromSD(SD, "/img/markus-spiske-sFydXGrt5OA-unsplash.jpg", "image/jpg");
+  loadFromSD(SD, "/img/7713.jpg", "image/jpg");
 }
 
 void handleRootgit()
@@ -188,11 +236,9 @@ void File_Download()
 
 void salve_data()
 {
-  /* getTimeStamp();
-   data = String(dayStamp) + ";" + String(timeStamp) + ";" +
-          temperatureC + ";" + temperatureF + " ;" + humidity + "\r\n";*/
+  data_now();
   String data;
-  data = "Data de Hj: ;" +
+  data = data_hora + ";" +
          temperatureC + ";" + temperatureF + " ;" + humidity;
   appendFile(SD, "/teste.csv", data.c_str());
   server.send(200, "text / plain", "OK"); // Returns the HTTP response
@@ -211,7 +257,8 @@ void init_Server()
   server.on("/components/highcharts.js", HTTP_GET, handleRoothc);
   server.on("/components/jquery.min.js", HTTP_GET, handleRootjq);
   server.on("/img/lin1.png", HTTP_GET, handleRootlin);
-  server.on("/img/markus-spiske-sFydXGrt5OA-unsplash.jpg", HTTP_GET, handleRootheader);
+  //server.on("/img/markus-spiske-sFydXGrt5OA-unsplash.jpg", HTTP_GET, handleRootheader);
+  server.on("/img/7713.jpg", HTTP_GET, handleRootheader);
   server.on("/img/git2.png", HTTP_GET, handleRootgit);
   // Funções dos Sensores e Atuadores
   server.on("/temperaturec", HTTP_GET, sensor_TemperatureC);
@@ -231,6 +278,8 @@ void init_Server()
   // Chamdas extras
   server.on("/checkpoint", HTTP_GET, salve_data);
   // server.on("/favicon.ico", HTTP_GET,handleSN);
+  // Chamadas para se comunicar com a API
+  server.on("/bd_save",HTTP_POST,handle_conect_api);
   //  Adiciona a função "handle_not_found" quando o servidor estiver offline
   server.onNotFound(handleNotFound);
 
