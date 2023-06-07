@@ -22,13 +22,11 @@ USE `esp32` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `esp32`.`Sensores` (
   `Data` DATETIME NOT NULL,
-  `TemperaturaC` VARCHAR(5) NOT NULL,
-  `TemperaturaF` VARCHAR(5) NOT NULL,
-  `Umidade` VARCHAR(7) NOT NULL,
-  UNIQUE INDEX `Data_UNIQUE` (`Data` ASC) VISIBLE,
-  UNIQUE INDEX `TemperaturaC_UNIQUE` (`TemperaturaC` ASC) VISIBLE,
-  UNIQUE INDEX `TemperaturaF_UNIQUE` (`TemperaturaF` ASC) VISIBLE,
-  UNIQUE INDEX `Umidade_UNIQUE` (`Umidade` ASC) VISIBLE)
+  `TemperaturaC` VARCHAR(10) NOT NULL,
+  `TemperaturaF` VARCHAR(10) NOT NULL,
+  `Umidade` VARCHAR(10) NOT NULL,
+  UNIQUE INDEX `Data_UNIQUE` (`Data` ASC) VISIBLE)
+  
 ENGINE = InnoDB;
 
 
