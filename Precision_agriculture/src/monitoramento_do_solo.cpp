@@ -44,10 +44,10 @@ void setup()
 
 void loop()
 {
-  Serial.println("MONITORAMENTO ----- AGRICULTURA DE PRECISÃO");
+ /* Serial.println("MONITORAMENTO ----- AGRICULTURA DE PRECISÃO");
   if (solo == "Crítico" || solo == "Regular")
   {
     IRRIGACAO();
-  }
+  }*/
   delay(10000);
 }

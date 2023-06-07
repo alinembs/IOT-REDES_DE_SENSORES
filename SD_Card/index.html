@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <title>Monitoramento de Dados</title>
+    
+</head>
+
+<body>
+    <div class="header">
+
+
+        <div class="info">
+            <h1>MONITORAMENTO DE DADOS</h1>
+            <h4>PROJETO DE SENSORES</h4>
+        </div>
+
+
+    </div>
+    <div class="menu">
+        <button class="tablink" onclick="openPage('corpo-dados', this, '#bbc9c9')" id="defaultOpen">Sensores</button>
+        <button class="tablink" onclick="openPage('atuadores', this, ' #bbc9c9')">Atuadores</button>
+       <button class="tablink" onclick="openPage('Add', this, ' #bbc9c9')">Gráfico de Dados</button> 
+       <button class="tablink" onclick="openPage('config', this, ' #bbc9c9')"> ⚙️ Configuração</button>
+        
+    </div>
+
+    <div id="corpo-dados" class="modo-1" style="display: flex;">
+        <div class="cards">
+            <div class="card temperaturec">
+                <h2 class="card-title-large">Temperatura°C</h2>
+                <h3 class="card-title-small">
+                     🌡️
+                    <span id="temperaturec">%TMC%</span>
+                    <sup class="units">&deg;C</sup>
+
+                </h3>
+
+            </div>
+            <div class="card temperaturef">
+                <h2 class="card-title-large">Temperatura°F</h2>
+                <h3 class="card-title-small">
+                    🌡️
+                    <span id="temperaturef">%TMF%</span>
+                    <sup class="units">&deg;F</sup>
+
+                </h3>
+
+            </div>
+
+            <div class="card humidity">
+                <h2 class="card-title-large">Humidade</h2>
+                <h3 class="card-title-small">
+                    💧
+                    <span id="umidade">%HMDT%</span>
+                    <sup class="units">%</sup>
+                </h3>
+
+            </div>
+
+
+            <div class="card solo">
+                <h2 class="card-title-large">Solo</h2>
+                <h3 class="card-title-small">
+                   🌱
+                    <span id="solo">%SOLO%</span>
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div id="config" class="modo-1" style="display: none">
+              
+        <div id="body" class="eyes-off">
+            <li class="tg-list-item" id="list_b1">
+                <h4 class="modo">Exportar Dados:</h4>
+                <form action="/download" method="post">
+                <button  type = 'submit' name = 'download' value="teste.csv" class="button success" id="btncsv">ENVIAR</button> 
+                </form>
+               
+             <!-- <button class='exportar' style="--clr:#39FF14" id="btn1" onclick="SubmitServo()"><span>CSV</span><i></i></button>-->
+            <li class="tg-list-item" id="list_b1">
+                <h4 class="modo">Modo:</h4>
+                <input class="tgl tgl-flip" id="btn_mode" type="checkbox" />
+                <label id="btn3" class="tgl-btn" data-tg-off="Automático" data-tg-on="Manual" for="btn_mode"></label>
+            </li>
+            <div class="container_data" style="display: none" id="manual-m">
+                <div id="servoM" class="p-control">
+                    <h1 class="titulos"> Controle do Servo</h1>
+                    <span id="rangeValue">0cm</span>
+                    <Input class="range" id="positionServo" type="range" name="" value="0" min="0" max="180"
+                        onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"></Input>
+                     <button class='exportar' style="--clr:#39FF14" id="btn1" onclick="SubmitServo()"><span>Enviar</span><i></i></button>
+                        <!--  <button class="button success" id="btn1" onclick="SubmitServo()">ENVIAR</button>-->
+                </div>
+
+                <div id="bomba" class="p-control">
+                    <h1 class="titulos"> Controle da Bomba</h1>
+                    <li class="tg-list-item">
+                        <input class="tgl tgl-skewed" id="btn2" type="checkbox" onchange="toggleCheckbox(this)" />
+                        <label id="btn2" class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="btn2"></label>
+                    </li>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    </div>
+
+    </div>
+
+    </div>
+
+    </div>
+
+    </div>
+
+    </div>
+
+    <div id="atuadores" class="modo-1" style="display: none;">
+        <div class="dados_extras">
+            <div class="card servo">
+                <h2 class="card-title-large">Braço</h2>
+                <h3 class="card-title-small">
+                    🤖
+                    <span id="servo">%SERVO%</span>
+                </h3>
+            </div>
+            <div class="card bomba">
+                <h2 class="card-title-large">Bomba</h2>
+                <h3 class="card-title-small">
+                    🚰
+                    <span id="butt_bomba">%BOMBA%</span>
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div id="Add" class="modo-1" style="display: none;">
+        <div class="baixar-dados">
+
+            <div id="chart-temperature" class="grid-btn">
+
+            </div>
+            <div id="chart-humidity" class="grid-btn">
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+
+        <div class="project__info">
+            <div class="dados_project">
+                <h2 class="company__logo">Aline Mariana</h2>
+                <ul class="footer__list">
+                    <li class="footer__list-item">
+                        <a href="#" class="footer__list-item" title="Github">
+                       <input class="social" type="image" width="24" height="24" src="/img/git2.png">
+                        </a>
+                    </li> 
+                    
+                    <li class="footer__list-item">
+                    <a href="https://www.linkedin.com/in/aline-mariana-b83575184/" class="footer__list-item" title="Linkedin">
+                        <input class="social" type="image" width="24" height="24" src="/img/lin1.png">
+                        </a>
+                    </li>
+                   
+                </ul>
+            </div>
+            <p class="project__description">
+                Projeto para Monitoramento da humidade e temperatura do solo.
+            </p>
+            <span class="copyright">&copy;2023 People name. All rights reserved.</span>
+        </div>
+    </div>
+
+    </div>
+</body>
+<script src="/components/jquery.min.js"></script>
+<script src="/components/highcharts.js"></script>
+<script type="text/javascript" src="script.js"></script>
+
+</html>
+

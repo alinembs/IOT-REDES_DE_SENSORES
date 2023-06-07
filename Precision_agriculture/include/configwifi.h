@@ -22,11 +22,11 @@ const char *PARAM_BOMBA = "relay";
 
 AsyncWebServer server(80);
 
-const char *ssid = "WifiEsp";
+//const char *ssid = "WifiEsp";
 const char *password = "88599380";
 
 // const char *password = "12345678";
-// const char *ssid = "Selma Maria_Fibra";
+ const char *ssid = "Selma Maria_Fibra";
 
 // CONFIG DO WEB SERVER
 
