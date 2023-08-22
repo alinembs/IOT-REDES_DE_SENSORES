@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css"
+        integrity="sha512-giQeaPns4lQTBMRpOOHsYnGw1tGVzbAIHUyHRgn7+6FmiEgGGjaG0T2LZJmAPMzRCl+Cug0ItQ2xDZpTmEc+CQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/brands.min.css"
+        integrity="sha512-G/T7HQJXSeNV7mKMXeJKlYNJ0jrs8RsWzYG7rVACye+qrcUhEAYKYzaa+VFy6eFzM2+/JT1Q+eqBbZFSHmJQew=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/solid.min.css"
+        integrity="sha512-6mc0R607di/biCutMUtU9K7NtNewiGQzrvWX4bWTeqmljZdJrwYvKJtnhgR+Ryvj+NRJ8+NnnCM/biGqMe/iRA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+
+    <title>Monitoramento de Dados</title>
+</head>
+
+<body>
+    <div class="header">
+
+        <div class="sides">
+            <div class="info">
+                <h1>MONITORAMENTO DE DADOS</h1>
+                <h4>PROJETO DE SENSORES</h4>
+            </div>
+        </div>
+
+    </div>
+    <div class="menu">
+        <button class="tablink" onclick="openPage('corpo-dados', this, '#0d0f27')" id="defaultOpen">Dados</button>
+        <button class="tablink" onclick="openPage('atuadores', this, 'rgb(48, 17, 7)')">Atuadores</button>
+        <button class="tablink" onclick="openPage('config', this, 'rgb(9, 51, 9)')">Modo</button>
+        <button class="tablink" onclick="openPage('Add', this, 'rgb(46, 15, 43)')">Downloads</button>
+    </div>
+
+    <div id="corpo-dados" class="modo-1" style="display: flex;">
+        <div class="cards">
+            <div class="card temperaturec">
+                <h2 class="card-title-large">Temperatura°C</h2>
+                <h3 class="card-title-small">
+                    <i class="fas fa-thermometer-half" style="color:#059e8a;"></i>
+                    <span id="temperaturec">%TMC%</span>
+                    <sup class="units">&deg;C</sup>
+
+                </h3>
+
+            </div>
+            <div class="card temperaturef">
+                <h2 class="card-title-large">Temperatura°F</h2>
+                <h3 class="card-title-small">
+                    <i class="fas fa-thermometer-half" style="color:#059e8a;"></i>
+                    <span id="temperaturec">%TMF%</span>
+                    <sup class="units">&deg;F</sup>
+
+                </h3>
+
+            </div>
+
+            <div class="card humidity">
+                <h2 class="card-title-large">Humidade</h2>
+                <h3 class="card-title-small">
+                    <i class="fa-solid fa-droplet" style="color:#059e8a;"> </i>
+                    <span id="umidade">%HMDT%</span>
+                    <sup class="units">%</sup>
+                </h3>
+
+            </div>
+
+
+            <div class="card solo">
+                <h2 class="card-title-large">Solo</h2>
+                <h3 class="card-title-small">
+                    <i class="fa-brands fa-pagelines" style="color:#059e8a;"> </i>
+                    <span id="solo">%SOLO%</span>
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div id="config" class="modo-1" style="display: none">
+
+        <div id="body" class="eyes-off">
+            <li class="tg-list-item" id="list_b1">
+                <h4 class="modo">Modo:</h4>
+                <input class="tgl tgl-flip" id="btn_mode" type="checkbox" />
+                <label id="btn3" class="tgl-btn" data-tg-off="Automático" data-tg-on="Manual" for="btn_mode"></label>
+            </li>
+            <div class="container_data" style="display: none" id="manual-m">
+                <div id="servoM" class="p-control">
+                    <h1 class="titulos"> Controle do Servo</h1>
+                    <span id="rangeValue">0cm</span>
+                    <Input class="range" type="range" name="" value="0" min="0" max="20"
+                        onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"></Input>
+                    <button class="button success" id="btn1">Submit</button>
+                </div>
+
+                <div id="bomba" class="p-control">
+                    <h1 class="titulos"> Controle da Bomba</h1>
+                    <li class="tg-list-item">
+                        <input class="tgl tgl-skewed" id="btn2" type="checkbox" />
+                        <label id="btn2" class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="btn2"></label>
+                    </li>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    </div>
+
+    </div>
+
+    </div>
+
+    </div>
+
+    </div>
+
+    </div>
+
+    <div id="atuadores" class="modo-1" style="display: none;">
+        <div class="dados_extras">
+            <div class="card servo">
+                <h2 class="card-title-large">Braço</h2>
+                <h3 class="card-title-small">
+                    <i class="fa-solid fa-robot" style="color:#059e8a;"> </i>
+                    <span id="servo">%SERVO%</span>
+                </h3>
+            </div>
+            <div class="card bomba">
+                <h2 class="card-title-large">Bomba</h2>
+                <h3 class="card-title-small">
+                    <i class="fa-solid fa-faucet-drip" style="color:#059e8a;"> </i>
+                    <span id="bomba">%BOMBA%</span>
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div id="Add" class="modo-1" style="display: none;">
+        <div class="baixar-dados">
+            <span class="titulo-medio">BAIXAR DADOS COMO:</span>
+            <button class='exportar' style="--clr:#39FF14"><span>CSV</span><i></i></button>
+
+            <button class='exportar' style="--clr:#FF44CC"><span>PDF</span><i></i></button>
+
+            <button class='exportar' style="--clr:#0FF0FC"><span>ZIP</span><i></i></button>
+
+            <button class='exportar' style="--clr:#8A2BE2"><span>RAR</span><i></i></button>
+
+        </div>
+
+
+
+    </div>
+
+    <div class="footer">
+
+        <div class="project__info">
+            <div class="dados_project">
+                <h2 class="company__logo">Aline Mariana</h2>
+                <ul class="footer__list">
+                    <li class="footer__list-item">
+                        <a href="#" class="footer__list-link">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                    </li>
+                    <li class="footer__list-item">
+                        <a href="https://www.linkedin.com/in/aline-mariana-b83575184/" class="footer__list-link">
+                            <i class="fa-brands fa-linkedin"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <p class="project__description">
+                Projeto para Monitoramento da humidade e temperatura do solo.
+            </p>
+            <span class="copyright">&copy;2023 People name. All rights reserved.</span>
+        </div>
+    </div>
+
+    </div>
+</body>
+<script>
+
+    const themeSwitch = document.getElementById("btn_mode");
+
+    const body = document.getElementById("body");
+    const manual = document.getElementById("manual-m");
+
+    themeSwitch.addEventListener("click", () => {
+
+
+        if (body.className === "eyes-off") {
+            manual.style.display = "grid";
+            body.className = "eyes-on";
+        } else if (body.className === "eyes-on") {
+            manual.style.display = "none";
+            body.className = "eyes-off";
+
+        }
+    });
+
+
+    const casa = document.getElementById("corpo-dados");
+    const config = document.getElementById("config");
+    const contact = document.getElementById("atuadores");
+    const about = document.getElementById("Add");
+
+    themeSwitch.addEventListener("click", () => {
+        let currentBodyClass = casa.className;
+
+        if (casa.className === "modo-1") {
+            casa.className = "modo-2";
+            config.className = "modo-2";
+            contact.className = "modo-2";
+            about.className = "modo-2";
+        } else if (casa.className === "modo-2") {
+
+            casa.className = "modo-1";
+            config.className = "modo-1";
+            contact.className = "modo-1";
+            about.className = "modo-1";
+        }
+    });
+
+    function openPage(pageName, elmnt, color) {
+
+        var i, dados, tablinks;
+        dados = document.getElementsByClassName("modo-1");
+
+        if (dados.length < 4) {
+            dados = document.getElementsByClassName("modo-2");
+        }
+
+        for (i = 0; i < dados.length; i++) {
+            dados[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+        }
+        document.getElementById(pageName).style.display = "flex";
+        elmnt.style.backgroundColor = color;
+    }
+
+    document.getElementById("defaultOpen").click();
+
+    function rangeSlide(value) {
+        document.getElementById('rangeValue').innerHTML = value + "cm";
+    }
+
+    var animateButton = function (e) {
+
+        e.preventDefault;
+        //reset animation
+        e.target.classList.remove('animate');
+
+        e.target.classList.add('animate');
+
+        e.target.classList.add('animate');
+        setTimeout(function () {
+            e.target.classList.remove('animate');
+        }, 6000);
+    };
+
+    var classname = document.getElementsByClassName("button");
+
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', animateButton, false);
+    }
+
+
+</script>
+
+</html>
