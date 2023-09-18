@@ -1,4 +1,3 @@
-
 #define limite 1295 
 #define min_moisture 4095
 #define max_moisture 2800
@@ -6,8 +5,9 @@
 #define otimo 75
 #define regular 60
 #define pessimo 50
-
-#define AOUT_PIN 36
+#define wet 210
+#define dry 510
+#define AOUT_PIN 36// ESP32 pin GIOP36 (ADC0) that connects to AOUT pin of moisture sensor
 
 String solo = " ";
 String humidity = " ";
@@ -64,19 +64,23 @@ String writeSolo(float percent)
 
 String readDSHumidity()
 {
-  int value_media = 0;
-  float media;
+  //int value_media = 0;
+ /* float media;
   int indice;
   for (indice= 0;indice<5;++indice)
   {
     delay(500);
     int value = analogRead(AOUT_PIN);
     value_media =  value_media + value;
+    Serial.println("Valores:",value_media);
   }
-  media = value_media/5;
+*/
+  //media = value_media/5;
   //Serial.print("Humidity: ");
   //Serial.println(media);
-  float percent = Percent_Moisture(media);
+   int value = analogRead(AOUT_PIN);
+ // float percent = Percent_Moisture(media);
+ float percent = Percent_Moisture(value);
   solo = writeSolo(percent);
   if ((percent < -1) & (percent > 100))
   {
@@ -91,4 +95,12 @@ String readDSHumidity()
   }
   humidity = String(percent);
   return String(percent);
+}
+String onSensorChange()  {
+  float sensor;
+  sensor = analogRead(AOUT_PIN);
+  sensor =  map(sensor,dry,wet,0,100);
+
+  humidity = String(sensor);
+  return  String(sensor);
 }

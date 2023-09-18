@@ -28,8 +28,8 @@ void init_App()
     preferences.end();
 
     // Incia o Wifi
-    // init_Wifi_AP();
-    init_Wifi_NM();
+     init_Wifi_AP();
+    //init_Wifi_NM();
     // Incia o Cartão de Memoria
     initSDCard();
     // Inicia o SPIFFS

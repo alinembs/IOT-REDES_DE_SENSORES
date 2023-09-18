@@ -129,7 +129,7 @@ setInterval(function () {
       document.getElementById("temperaturec").innerHTML = this.responseText;
       var x = (new Date()).getTime(),
         y = parseFloat(this.responseText);
-      //console.log(this.responseText);
+      //console.log(this.responseText);]
       if (chartT.series[0].data.length > 40) {
         chartT.series[0].addPoint([x, y], true, true, true);
       } else {

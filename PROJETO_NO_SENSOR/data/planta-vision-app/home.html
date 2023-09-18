@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Robot Planta Vision App</title>
+    <link
+      rel="icon"
+      href="/planta-vision-app/icon/icons8-robo-60.png"
+    />
+    <link
+      href="/planta-vision-app/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="/planta-vision-app/css/style.css"
+    />
+    <link rel="stylesheet" href="/planta-vision-app/css/bootstrap.css" />
+    <link rel="stylesheet" href="/planta-vision-app/css/bootstrap.min.css.map" />
+  </head>
+
+  <header>
+
+    <nav
+      id="navbar-app"
+      class="navbar navbar-expand-lg navbar-dark fixed-top navbar-transparente"
+    >
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          href="/planta-vision-app/home.html"
+        >
+          Robot Planta Vision
+          <img
+            src="/planta-vision-app/icon/icons8-robo-60.png"
+            width="30"
+          />
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#scrollp1"
+                >Monitoramento</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#scrollp2">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#scrollp3">Controle e Configuração</a>
+            </li>
+            <li class="nav-item divisor"></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#scrollp4">Sobre</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#scrollp5">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <body>
+    <div
+      id="conteudo "
+      class="container-fluid"
+      data-bs-spy="scroll"
+      data-bs-target="#navbar-app"
+      data-bs-smooth-scroll="true"
+      tabindex="0"
+      style="padding: 5%;"
+    >
+      <!-- Cards -->
+      <div class="row gy-3" id="scrollp1">
+        <h1 class="text-white text-center">Monitoranto da Planta</h1>
+        <div class="row gy-3">
+          <div class="col-lg">
+            <div class="card">
+              <img
+                src="/planta-vision-app/img/milada-vigerova-A-1Tfla6kmE-unsplash.jpg"
+                class="card-img-top"
+                alt="..."
+              />
+              <div class="card-body">
+                <h4 class="card-title">Umidade</h4>
+                <p class="card-text">
+                  Valor da Umidade medido pelo sensor Capacitive Soil Moisture
+                </p>
+                💧
+                <span id="umidade" class="card-text">%HMDT%</span>
+                <span class="units">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg">
+            <div class="card">
+              <img
+                src="/planta-vision-app/img/raimond-klavins-MOzwsN74YAs-unsplash.jpg"
+                class="card-img-top"
+                alt="..."
+              />
+              <div class="card-body">
+                <h4 class="card-title">Temperatura em ºC</h4>
+                <p class="card-text">
+                  Valor da Temperatura em Celsius medido pelo Sensor DS18B20
+                </p>
+                🌡️
+                <span id="temperaturec" class="card-text">%TMC%</span>
+                <span class="units">&deg;C</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg">
+            <div class="card">
+              <img
+                src="/planta-vision-app/img/luis-tosta-SVeCm5KF_ho-unsplash.jpg"
+                class="card-img-top"
+                alt="..."
+              />
+              <div class="card-body">
+                <h4 class="card-title">Fluxo de Água</h4>
+                <p class="card-text">
+                  Vazão da Água para irrigação das plantas medido pelo sensor
+                  YF-S201
+                </p>
+                🚰
+                <span id="fluxo" class="card-text">%FLUXO%</span>
+                <span class="units">L/min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Cards -->
+      <!-- Dashboard -->
+      <div id="scrollp2" class="row gy-3">
+        <h1 class="text-white text-center">Dashboard das Mediçoes</h1>
+        <div class="row gy-3">
+          <h3 class="text-white text-center">Temperatura em Cº</h3>
+          <div id="chart_temperatura" style="width: 100%; height: 300px"></div>
+          <h3 class="text-white text-center">Humidade em %</h3>
+          <div id="chart_umidade" style="width: 100%; height: 300px"></div>
+          <h3 class="text-white text-center">Gasto de Água para Irrigação</h3>
+          <div id="chart_fluxo" style="width: 100%; height: 300px"></div>
+
+    
+          <h3 class="text-white text-center">Cards Info</h3>
+          <div id="carouselExample" class="carousel slide ">
+            <div class="carousel-inner">
+              <div class="carousel-item active ">
+                <div class="card lg-3" style="max-width: 540px">
+                  <div class="row g-0 ">
+                    <div class="col-md-4">
+                      <img
+                        src="/planta-vision-app/img/41021.jpg"
+                        class="img-fluid rounded-start "
+                        alt="..."
+                        style="max-height: 250px;"
+                      />
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">Planta 01</h5>
+                        <p class="card-text">
+                          <span> Umidade da Planta :</span>
+                          <span id="umidade" class="card-text">%HMDT1%</span>
+                          <span class="units">%</span>
+                          <span> Temperatura da Planta :</span>
+
+                          <span id="temperaturec" class="card-text">%TMC1%</span>
+                          <span class="units">&deg;C</span>
+                          <span> Consumo de Água utilizado para Irrigação: </span>
+
+                          <span id="fluxo" class="card-text">%FLUXO1%</span>
+                          <span class="units">L/min</span>
+                        </p>
+                        <p class="card-text">
+                           <small class="text-body-secondary"
+                            >Data da Irrigação:</small
+                          >
+                          <small class="text-body-secondary" id="data_de_irrigacao"
+                            >%data1%</small
+                          >
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item " >
+                  <div class="card lg-3" style="max-width: 540px;">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img
+                        src="/planta-vision-app/img/41021.jpg"
+                        class="img-fluid rounded-start"
+                        alt="..."
+                        style="max-height: 250px;"
+                      />
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">Planta 02</h5>
+                        <p class="card-text">
+                          <span> Umidade da Planta :</span>
+                          <span id="umidade" class="card-text">%HMDT2%</span>
+                          <span class="units">%</span>
+                          <span> Temperatura da Planta :</span>
+
+                          <span id="temperaturec" class="card-text">%TMC2%</span>
+                          <span class="units">&deg;C</span>
+                          <span> Consumo de Água utilizado para Irrigação: </span>
+
+                          <span id="fluxo" class="card-text">%FLUXO2%</span>
+                          <span class="units">L/min</span>
+                        </p>
+                        <p class="card-text">
+                           <small class="text-body-secondary"
+                            >Data da Irrigação:</small
+                          >
+                          <small class="text-body-secondary" id="data_de_irrigacao"
+                            >%data2%</small
+                          >
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item ">
+                <div class="card lg-3" style="max-width: 540px">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img
+                        src="/planta-vision-app/img/41021.jpg"
+                        class="img-fluid rounded-start "
+                        alt="..."
+                        style="max-height: 250px;"
+                      />
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">Planta 03</h5>
+                        <p class="card-text">
+                          <span> Umidade da Planta :</span>
+                          <span id="umidade" class="card-text">%HMDT3%</span>
+                          <span class="units">%</span>
+                          <span> Temperatura da Planta :</span>
+
+                          <span id="temperaturec" class="card-text">%TMC3%</span>
+                          <span class="units">&deg;C</span>
+                          <span> Consumo de Água utilizado para Irrigação: </span>
+
+                          <span id="fluxo" class="card-text">%FLUXO3%</span>
+                          <span class="units">L/min</span>
+                        </p>
+                        <p class="card-text">
+                           <small class="text-body-secondary"
+                            >Data da Irrigação:</small
+                          >
+                          <small class="text-body-secondary" id="data_de_irrigacao"
+                            >%data3%</small
+                          >
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Dashboard -->
+      <div id="scrollp3" class="row gy-3">
+        <h1 class="text-white text-center">Controle e Configuração</h1>
+        <div class="row gy-3">
+          <!-- Modal -->
+
+          <div class="d-grid gap-2 col-6 mx-auto">
+            <button
+              class="btn btn-success"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop1"
+            >
+              Download dos Dados
+            </button>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#staticBackdrop"
+              aria-controls="staticBackdrop"
+            >
+              Modo Manual
+            </button>
+            <div
+              class="offcanvas offcanvas-start"
+              data-bs-backdrop="static"
+              tabindex="-1"
+              id="staticBackdrop"
+              aria-labelledby="staticBackdropLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="staticBackdropLabel">
+                  Modo Manual para Controle do Robô
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body">
+                <div class="d-grid gap-2 col-10 mx-auto">
+                  <!--Bomba de Água-->
+                  <h5>Controle da Bomba de Água</h5>
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="flexSwitchCheckChecked"
+                      onchange="toggleCheckbox(this)"
+                    />
+                    <label
+                      class="form-check-label"
+                      id="btn_bomb"
+                      for="flexSwitchCheckChecked"
+                      >Desligado</label
+                    >
+                  </div>
+                  <!--Braço Róbotico-->
+                  <h5>Controle do Braço Robótico</h5>
+
+                  <span class="text-center">Servo Base</span>
+                  <span id="rangeValue_base" class="text-center">0ªGraus</span>
+                  <input
+                    class="range"
+                    id="positionServo_1"
+                    type="range"
+                    name=""
+                    value="0"
+                    min="0"
+                    max="180"
+                    onChange="rangeSlide(this.value)"
+                    onmousemove="rangeSlide_base(this.value)"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    onclick="SubmitServo_1()"
+                  >
+                    Enviar
+                  </button>
+
+                  <span class="text-center">Servo Vertical</span>
+                  <span id="rangeValue_vertical" class="text-center"
+                    >0ªGraus</span
+                  >
+                  <input
+                    class="range"
+                    id="positionServo_2"
+                    type="range"
+                    name=""
+                    value="0"
+                    min="0"
+                    max="180"
+                    onChange="rangeSlide(this.value)"
+                    onmousemove="rangeSlide_vertical(this.value)"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    onclick="SubmitServo_2()"
+                  >
+                    Enviar
+                  </button>
+
+                  <span class="text-center">Servo Horizontal</span>
+                  <span id="rangeValue_horizontal" class="text-center"
+                    >0ªGraus</span
+                  >
+                  <input
+                    class="range"
+                    id="positionServo_3"
+                    type="range"
+                    name=""
+                    value="0"
+                    min="0"
+                    max="180"
+                    onChange="rangeSlide(this.value)"
+                    onmousemove="rangeSlide_horizontal(this.value)"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-dark"
+                    onclick="SubmitServo_3()"
+                  >
+                    Enviar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Dowload do Arquivo database.csv-->
+          <div
+            class="modal fade"
+            id="staticBackdrop1"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                    Robot Planta Vsion
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  Arquivo CSV contento os dados da temperatura, humidade e gasto
+                  de água para irrigação para cada planta medida.
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Fechar
+                  </button>
+                  <button type="button" class="btn btn-primary">
+                    Download
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal -->
+        </div>
+      </div>
+      <!-- Sobre -->
+      <div id="scrollp4" class="row gy-3">
+        <h1 class="text-white text-center">Sobre</h1>
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOne"
+                aria-expanded="true"
+                aria-controls="collapseOne"
+              >
+                Accordion Item #1
+              </button>
+            </h2>
+            <div
+              id="collapseOne"
+              class="accordion-collapse collapse show"
+              data-bs-parent="#accordionExample"
+            >
+              <div class="accordion-body">
+                <strong>This is the first item's accordion body.</strong> It is
+                shown by default, until the collapse plugin adds the appropriate
+                classes that we use to style each element. These classes control
+                the overall appearance, as well as the showing and hiding via
+                CSS transitions. You can modify any of this with custom CSS or
+                overriding our default variables. It's also worth noting that
+                just about any HTML can go within the
+                <code>.accordion-body</code>, though the transition does limit
+                overflow.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo"
+                aria-expanded="false"
+                aria-controls="collapseTwo"
+              >
+                Accordion Item #2
+              </button>
+            </h2>
+            <div
+              id="collapseTwo"
+              class="accordion-collapse collapse"
+              data-bs-parent="#accordionExample"
+            >
+              <div class="accordion-body">
+                <strong>This is the second item's accordion body.</strong> It is
+                hidden by default, until the collapse plugin adds the
+                appropriate classes that we use to style each element. These
+                classes control the overall appearance, as well as the showing
+                and hiding via CSS transitions. You can modify any of this with
+                custom CSS or overriding our default variables. It's also worth
+                noting that just about any HTML can go within the
+                <code>.accordion-body</code>, though the transition does limit
+                overflow.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseThree"
+                aria-expanded="false"
+                aria-controls="collapseThree"
+              >
+                Accordion Item #3
+              </button>
+            </h2>
+            <div
+              id="collapseThree"
+              class="accordion-collapse collapse"
+              data-bs-parent="#accordionExample"
+            >
+              <div class="accordion-body">
+                <strong>This is the third item's accordion body.</strong> It is
+                hidden by default, until the collapse plugin adds the
+                appropriate classes that we use to style each element. These
+                classes control the overall appearance, as well as the showing
+                and hiding via CSS transitions. You can modify any of this with
+                custom CSS or overriding our default variables. It's also worth
+                noting that just about any HTML can go within the
+                <code>.accordion-body</code>, though the transition does limit
+                overflow.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="scrollp5" class="row gy-3">
+        <form>
+          <h1 class="my-5 text-center text-white">Contact Us</h1>
+          <div class="mb-3">
+            <label
+              for="exampleInputEmail1"
+              class="form-label text-light text-center"
+              >Endereço de Email</label
+            >
+            <input
+              type="email"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+            />
+            <div id="emailHelp" class="form-text">
+              We'll never share your email with anyone else.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label
+              for="exampleFormControlTextarea1"
+              class="form-label text-light text-center"
+              >Texto Exemplo</label
+            >
+            <textarea
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+
+      <!-- Container Big -->
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-dark py-2 mt-5">
+      <div class="container text-light text-center">
+        <div class="row align-items-center">
+          <div class="col">
+            <p class="display-7 mb-3">Robot Planta Vision</p>
+          </div>
+          <div class="col">
+            <a
+              href="https://github.com/alinembs"
+              class="footer__list-item"
+              title="Github"
+            >
+              <input
+                class="social"
+                type="image"
+                width="30"
+                height="30"
+                src="/planta-vision-app/icon/github.svg"
+              />
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/aline-mariana-b83575184/"
+              class="footer__list-item"
+              title="Linkedin"
+            >
+              <input
+                class="social"
+                type="image"
+                width="30"
+                height="30"
+                src="/planta-vision-app/icon/linkedin.svg"
+              />
+            </a>
+          </div>
+        </div>
+        <small class="text-white-50"
+          >&copy;Copyright by Aline Mariana. All rights reserved.</small
+        >
+      </div>
+    </footer>
+    <!-- Footer -->
+    <script src="/planta-vision-app/js/bootstrap.bundle.min.js"></script>
+    <script src="/planta-vision-app/chart/highcharts_stock/highstock.js"></script>
+    <script
+      type="text/javascript"
+      src="/planta-vision-app/js/script.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/planta-vision-app/js/index.umd.js"
+    ></script>
+    <script type="text/javascript" src="/planta-vision-app/js/bootstrap.bundle.min.js.map"></script>
+    <script type="text/javascript" src="/planta-vision-app/chart/highcharts_stock/highstock.js.map"></script>
+    <script type="text/javascript" src="/planta-vision-app/chart/highcharts_stock/highstock.src.js"></script>
+  </body>
+</html>

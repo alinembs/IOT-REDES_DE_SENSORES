@@ -10,47 +10,117 @@ String MODO_ATUAL = " ";
 const char *PARAM_MODE = "state";
 const char *PARAM_FILE = "value";
 
-
 // Manipulador para a página principal
 void handleRoot()
 {
-  loadFromSD(SD, "/index.html", "text/html");
-  // loadFromSPIFFS("/index.html","text/html");
+  //loadFromSD(SD, "/planta-vision-app/home.html", "text/html");
+  loadFromSPIFFS("/planta-vision-app/home.html","text/html");
 }
 void handleRootcss()
 {
-  loadFromSD(SD, "/style.css", "text/css");
+  loadFromSD(SD, "/planta-vision-app/css/style.css", "text/css");
   // loadFromSPIFFS("/style.css","text/css");
 }
 
 void handleRootjs()
 {
-  loadFromSD(SD, "/script.js", "text/js");
+  //loadFromSD(SD, "/planta-vision-app/js/script.js", "text/js");
+  loadFromSPIFFS("/planta-vision-app/js/script.js","text/js");
+}
+
+/////////////////route dir css /////////////////////////////
+
+void handleRootbootstrap_1css()
+{
+  loadFromSD(SD, "/planta-vision-app/css/bootstrap.min.css", "text/css");
   // loadFromSPIFFS("/script.js","text/js");
 }
+void handleRootbootstrap_2css()
+{
+  loadFromSD(SD, "/planta-vision-app/css/bootstrap.css", "text/css");
+  // loadFromSPIFFS("/script.js","text/js");
+}
+void handleRootbootstrap_3css()
+{
+  loadFromSD(SD, "/planta-vision-app/css/bootstrap.min.css.map", "text/css");
+  // loadFromSPIFFS("/script.js","text/js");
+}
+///////////// route dir js //////////////////////////////////
 
-void handleRoothc()
+void handleRootbootstrap_1js()
 {
-  loadFromSD(SD, "/components/highcharts.js", "text/js");
+  loadFromSD(SD, "/planta-vision-app/js/bootstrap.bundle.min.js", "text/js");
 }
-void handleRootjq()
+void handleRootbootstrap_2js()
 {
-  loadFromSD(SD, "/components/jquery.min.js", "text/js");
+  loadFromSD(SD, "/planta-vision-app/js/bootstrap.bundle.min.js.map", "text/js");
 }
+void handleRootbootstrap_3js()
+{
+  loadFromSD(SD, "/planta-vision-app/js/index.umd.js", "text/js");
+}
+
+///////////////////route dir icon/////////////////////////
 void handleRootlin()
 {
-  loadFromSD(SD, "/img/lin1.png", "image/png");
+  loadFromSD(SD, "/planta-vision-app/icon/linkedin.svg", "image/svg");
 }
-void handleRootheader()
-{
-  //loadFromSD(SD, "/img/markus-spiske-sFydXGrt5OA-unsplash.jpg", "image/jpg");
-  loadFromSD(SD, "/img/7713.jpg", "image/jpg");
-}
-
 void handleRootgit()
 {
-  loadFromSD(SD, "/img/git2.png", "image/png");
+  loadFromSD(SD, "/planta-vision-app/icon/github.svg", "image/svg");
 }
+void handleRooticon()
+{
+  loadFromSD(SD, "/planta-vision-app/icon/icons8-robo-60.png", "image/png");
+}
+
+/////////////////////////rout dir img///////////////////////////
+void handleRootplantacard()
+{
+
+  loadFromSD(SD, "/planta-vision-app/img/41021.jpg", "image/jpg");
+}
+
+
+void handleRootivan()
+{
+  loadFromSD(SD, "/planta-vision-app/img/fundo.png", "image/png");
+  
+}
+void handleRootluis()
+{
+
+  loadFromSD(SD, "/planta-vision-app/img/luis-tosta-SVeCm5KF_ho-unsplash.jpg", "image/jpg");
+}
+
+void handleRootmilada()
+{
+  loadFromSD(SD, "/planta-vision-app/img/milada-vigerova-A-1Tfla6kmE-unsplash.jpg", "image/pg");
+}
+
+void handleRootraimo()
+{
+  loadFromSD(SD, "/planta-vision-app/img/raimond-klavins-MOzwsN74YAs-unsplash.jpg", "image/jpg");
+}
+
+///////////////////////route dir chart/////////////////////
+
+void handleRoothgc1()
+{
+  loadFromSD(SD, "/planta-vision-app/chart/highcharts_stock/highstock.js", "text/js");
+}
+void handleRoothgc2()
+{
+
+  loadFromSD(SD, "/planta-vision-app/chart/highcharts_stock/highstock.js.map", "text/js");
+}
+
+void handleRoothgc3()
+{
+  loadFromSD(SD, "/planta-vision-app/chart/highcharts_stock/highstock.src.js", "text/js");
+}
+
+//////////////////////route sensor variables ///////////////////
 void sensor_TemperatureF()
 {
   server.send_P(200, "text/plain", readDSTemperatureF().c_str());
@@ -61,7 +131,7 @@ void sensor_TemperatureC()
 }
 void sensor_humidity()
 {
-  server.send_P(200, "text/plain", readDSHumidity().c_str());
+  server.send_P(200, "text/plain", onSensorChange().c_str());
 }
 void state_servo()
 {
@@ -75,7 +145,7 @@ void state_bomb()
 {
   server.send_P(200, "text/plain", estado_bomba.c_str());
 }
-
+/////////////////////route function /////////////////////////
 void handleGenericArgs()
 { // Handler
 
@@ -121,14 +191,14 @@ void handleModeArg()
   { // Parameter not found
 
     message = "Argument not found";
-   
+
   }
   else
   { // Parameter found
 
     message += server.arg(PARAM_SERVO); // Gets the value of the query parameter
     POSITION_SERVO = message.toInt();
-    
+
   }
 
   server.send(200, "text / plain", "OK"); // Returns the HTTP response
@@ -202,32 +272,58 @@ void salve_data()
 
 void init_Server()
 {
- // Configuração das Rotas do Servidor
+  // Configuração das Rotas do Servidor
+
   // Adiciona a função "handle_on_connect" quando o servidor estiver online
 
   server.on("/", HTTP_GET, handleRoot);
-  server.on("/style.css", HTTP_GET, handleRootcss);
-  server.on("/script.js", HTTP_GET, handleRootjs);
-  // Funcões Adicionais
-  server.on("/components/highcharts.js", HTTP_GET, handleRoothc);
-  server.on("/components/jquery.min.js", HTTP_GET, handleRootjq);
-  server.on("/img/lin1.png", HTTP_GET, handleRootlin);
-  //server.on("/img/markus-spiske-sFydXGrt5OA-unsplash.jpg", HTTP_GET, handleRootheader);
-  server.on("/img/7713.jpg", HTTP_GET, handleRootheader);
-  server.on("/img/git2.png", HTTP_GET, handleRootgit);
-  // Funções dos Sensores e Atuadores
+  server.on("/planta-vision-app/css/style.css", HTTP_GET, handleRootcss);
+  server.on("/planta-vision-app/js/script.js", HTTP_GET, handleRootjs);
+
+  // route css
+
+  server.on("/planta-vision-app/css/bootstrap.css", HTTP_GET, handleRootbootstrap_1css);
+  server.on("/planta-vision-app/css/bootstrap.min.css", HTTP_GET, handleRootbootstrap_2css);
+  server.on("/planta-vision-app/css/bootstrap.min.css.map", HTTP_GET, handleRootbootstrap_3css);
+
+  // route jss
+  server.on("/planta-vision-app/js/bootstrap.bundle.min.js", HTTP_GET, handleRootbootstrap_1js);
+  server.on("/planta-vision-app/js/bootstrap.bundle.min.js.map", HTTP_GET, handleRootbootstrap_2js);
+  server.on("/planta-vision-app/js/index.umd.js", HTTP_GET, handleRootbootstrap_3js);
+
+  // route charts
+
+  server.on("/planta-vision-app/chart/highcharts_stock/highstock.js", HTTP_GET, handleRoothgc1);
+  server.on("/planta-vision-app/chart/highcharts_stock/highstock.js.map", HTTP_GET, handleRoothgc2);
+  server.on("/planta-vision-app/chart/highcharts_stock/highstock.src.js", HTTP_GET, handleRoothgc3);
+  // route  img
+
+  server.on("/planta-vision-app/img/41021.jpg", HTTP_GET, handleRootplantacard);
+  server.on("/planta-vision-app/img/raimond-klavins-MOzwsN74YAs-unsplash.jpg", HTTP_GET, handleRootraimo);
+  server.on("/planta-vision-app/img/luis-tosta-SVeCm5KF_ho-unsplash.jpg", HTTP_GET, handleRootluis);
+  server.on("/planta-vision-app/img/milada-vigerova-A-1Tfla6kmE-unsplash.jpg", HTTP_GET, handleRootmilada);
+  
+  
+  // route icon
+  server.on("/planta-vision-app/icon/github.svg", HTTP_GET, handleRootlin);
+  server.on("/planta-vision-app/icon/icons8-robo-60.png", HTTP_GET, handleRooticon);
+  server.on("/planta-vision-app/icon/linkedin.svg", HTTP_GET, handleRootgit);
+
+  // route da image fundo  - maior - arquivo
+  server.on("/planta-vision-app/img/fundo.png", HTTP_GET, handleRootivan);
+  // route sensor
   server.on("/temperaturec", HTTP_GET, sensor_TemperatureC);
-  server.on("/temperaturef", HTTP_GET, sensor_TemperatureF);
+  //server.on("/temperaturef", HTTP_GET, sensor_TemperatureF);
   server.on("/umidade", HTTP_GET, sensor_humidity);
-  server.on("/solo", HTTP_GET, state_solo);
-  server.on("/servo", HTTP_GET, state_servo);
-  server.on("/butt_bomba", HTTP_GET, state_bomb);
+  //server.on("/solo", HTTP_GET, state_solo);
+  //server.on("/servo", HTTP_GET, state_servo);
+  //server.on("/butt_bomba", HTTP_GET, state_bomb);
 
   // Funções de Pegar dados Web
-  server.on("/update", HTTP_GET, handleModeArg);
-  //Funções para Mandar o RaspiBerry Pi controlor o Braco e ou Bomba
-  server.on("/slider",HTTP_POST,handle_controle_braco);
-  server.on("/bomba", HTTP_GET, handle_controle_bomba);
+  //server.on("/update", HTTP_GET, handleModeArg);
+  // Funções para Mandar o RaspiBerry Pi controlor o Braco e ou Bomba
+  //server.on("/slider", HTTP_POST, handle_controle_braco);
+  //server.on("/bomba", HTTP_GET, handle_controle_bomba);
 
   // Função para Baixar dados cvs
   server.on("/", HTTP_POST, File_Download);
@@ -235,7 +331,7 @@ void init_Server()
   server.on("/checkpoint", HTTP_GET, salve_data);
   // server.on("/favicon.ico", HTTP_GET,handleSN);
   // Chamadas para se comunicar com a API
-  server.on("/bd_save",HTTP_POST,handle_conect_api);
+  server.on("/bd_save", HTTP_POST, handle_conect_api);
   //  Adiciona a função "handle_not_found" quando o servidor estiver offline
   server.onNotFound(handleNotFound);
   // Inicia o servidor

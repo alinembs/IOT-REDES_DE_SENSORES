@@ -20,6 +20,8 @@ String data_hora = "";
 
 WebServer server(80);
 
+#define servername "plantavision" //Define the name to server... 
+
 // Manipulador para páginas não encontradas
 void handleNotFound()
 {
@@ -204,7 +206,7 @@ void init_RTC()
   if (!rtc.begin())
   {
     Serial.println("Não foi possível encontrar RTC");
-    while(1);
+    //while(1);
   }
  
 }
