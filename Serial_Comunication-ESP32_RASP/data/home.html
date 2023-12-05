@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /*  BOTÃO - OFF/ON  */
+
+      li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .tg-list {
+        text-align: center;
+        display: flex;
+        align-items: center;
+      }
+
+      .tg-list-item {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        align-items: center;
+      }
+
+      #list_b1 {
+        column-gap: 1.4em;
+      }
+
+      .modo {
+        color: #999;
+      }
+
+      .tgl {
+        display: none;
+      }
+
+      .tgl,
+      .tgl:after,
+      .tgl:before,
+      .tgl *,
+      .tgl *:after,
+      .tgl *:before,
+      .tgl + .tgl-btn {
+        box-sizing: border-box;
+      }
+
+      .tgl::selection,
+      .tgl:after::selection,
+      .tgl:before::selection,
+      .tgl *::selection,
+      .tgl *:after::selection,
+      .tgl *:before::selection,
+      .tgl + .tgl-btn::selection {
+        background: none;
+      }
+
+      .tgl + .tgl-btn {
+        outline: 0;
+        display: block;
+        width: 8em;
+        height: 2em;
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .tgl + .tgl-btn:after,
+      .tgl + .tgl-btn:before {
+        position: relative;
+        display: block;
+        content: "";
+        width: 50%;
+        height: 100%;
+      }
+
+      .tgl + .tgl-btn:after {
+        left: 0;
+      }
+
+      .tgl + .tgl-btn:before {
+        display: none;
+      }
+
+      .tgl:checked + .tgl-btn:after {
+        left: 50%;
+      }
+
+      .tgl-flip + .tgl-btn {
+        padding: 2px;
+        transition: all 0.2s ease;
+        font-family: sans-serif;
+        perspective: 100px;
+      }
+
+      .tgl-flip + .tgl-btn:after,
+      .tgl-flip + .tgl-btn:before {
+        display: inline-block;
+        transition: all 0.6s ease;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        line-height: 2em;
+        font-weight: bold;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        backface-visibility: hidden;
+        border-radius: 4px;
+      }
+
+      .tgl-flip + .tgl-btn:after {
+        content: attr(data-tg-on);
+        background: #02c66f;
+        transform: rotateY(-180deg);
+      }
+
+      .tgl-flip + .tgl-btn:before {
+        background: #ff3a19;
+        content: attr(data-tg-off);
+      }
+
+      .tgl-flip + .tgl-btn:active:before {
+        transform: rotateY(-20deg);
+      }
+
+      .tgl-flip:checked + .tgl-btn:before {
+        transform: rotateY(180deg);
+      }
+
+      .tgl-flip:checked + .tgl-btn:after {
+        transform: rotateY(0);
+        left: 0;
+        background: #7fc6a6;
+      }
+
+      .tgl-flip:checked + .tgl-btn:active:after {
+        transform: rotateY(20deg);
+      }
+
+      /* BOTÃO LED  */
+
+      .tgl-skewed + .tgl-btn {
+        overflow: hidden;
+        transform: skew(-10deg);
+        backface-visibility: hidden;
+        transition: all 0.2s ease;
+        font-family: sans-serif;
+        background: #888;
+      }
+
+      .tgl-skewed + .tgl-btn:after,
+      .tgl-skewed + .tgl-btn:before {
+        transform: skew(10deg);
+        display: inline-block;
+        transition: all 0.2s ease;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        line-height: 2em;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+      }
+
+      .tgl-skewed + .tgl-btn:after {
+        left: 100%;
+        content: attr(data-tg-on);
+      }
+
+      .tgl-skewed + .tgl-btn:before {
+        left: 0;
+        content: attr(data-tg-off);
+      }
+
+      .tgl-skewed + .tgl-btn:active {
+        background: #888;
+      }
+
+      .tgl-skewed + .tgl-btn:active:before {
+        left: -10%;
+      }
+
+      .tgl-skewed:checked + .tgl-btn {
+        background: #86d993;
+      }
+
+      .tgl-skewed:checked + .tgl-btn:before {
+        left: -100%;
+      }
+
+      .tgl-skewed:checked + .tgl-btn:after {
+        left: 0;
+      }
+
+      .tgl-skewed:checked + .tgl-btn:active:after {
+        left: 10%;
+      }
+      .p-control {
+        display: grid;
+        justify-items: center;
+      }
+   
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>Controle do Braço e Bomba via  Web Server Esp32</h2>
+
+    <div id="bomba" class="p-control">
+      <h1 class="titulos">Controle da Bomba</h1>
+      <li class="tg-list-item">
+        <input
+          class="tgl tgl-skewed"
+          id="btn2"
+          type="checkbox"
+          onchange="toggleCheckbox(this)"
+        />
+        <label
+          id="btn2"
+          class="tgl-btn"
+          data-tg-off="OFF"
+          data-tg-on="ON"
+          for="btn2"
+        ></label>
+      </li>
+    </div>
+    
+      <div id="servoM" class="p-control">
+          <h1 class="titulos"> Controle do Servo 1</h1>
+          <span id="rangeValue1">0cm</span>
+          <Input class="range" id="positionServo1" type="range" name="" value="0" min="0" max="180"
+              onChange="rangeSlide1(this.value)" onmousemove="rangeSlide1(this.value)"></Input>
+           <button class='exportar' style="--clr:#39FF14" id="btn1" onclick="SubmitServo1()"><span>Enviar</span><i></i></button>
+              <!--  <button class="button success" id="btn1" onclick="SubmitServo()">ENVIAR</button>-->
+      </div>
+      <div id="servoM" class="p-control">
+        <h1 class="titulos"> Controle do Servo 2</h1>
+        <span id="rangeValue2">0cm</span>
+        <Input class="range" id="positionServo2" type="range" name="" value="0" min="0" max="180"
+            onChange="rangeSlide2(this.value)" onmousemove="rangeSlide2(this.value)"></Input>
+         <button class='exportar' style="--clr:#39FF14" id="btn1" onclick="SubmitServo2()"><span>Enviar</span><i></i></button>
+            <!--  <button class="button success" id="btn1" onclick="SubmitServo()">ENVIAR</button>-->
+    </div>
+    <div id="servoM" class="p-control">
+      <h1 class="titulos"> Controle do Servo 3</h1>
+      <span id="rangeValue3">0cm</span>
+      <Input class="range" id="positionServo3" type="range" name="" value="0" min="0" max="180"
+          onChange="rangeSlide3(this.value)" onmousemove="rangeSlide3(this.value)"></Input>
+       <button class='exportar' style="--clr:#39FF14" id="btn1" onclick="SubmitServo3()"><span>Enviar</span><i></i></button>
+          <!--  <button class="button success" id="btn1" onclick="SubmitServo()">ENVIAR</button>-->
+  </div>
+
+  </body>
+  <script>
+    function rangeSlide1(value) {
+  document.getElementById('rangeValue1').innerHTML = value + "cm";
+}
+function rangeSlide2(value) {
+  document.getElementById('rangeValue2').innerHTML = value + "cm";
+}
+function rangeSlide3(value) {
+  document.getElementById('rangeValue3').innerHTML = value + "cm";
+}
+function SubmitServo1() {
+  var positionS = document.getElementById("positionServo1").value;
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/slider1?value=" + positionS + "&", true);
+  xhr.send();
+
+}
+function SubmitServo2() {
+  var positionS = document.getElementById("positionServo2").value;
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/slider2?value=" + positionS + "&", true);
+  xhr.send();
+
+}
+function SubmitServo3() {
+  var positionS = document.getElementById("positionServo3").value;
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/slider3?value=" + positionS + "&", true);
+  xhr.send();
+
+}
+
+function toggleCheckbox(element) {
+      var xhr = new XMLHttpRequest();
+      if (element.checked) {
+        xhr.open("GET", "/update?relay=ON", true);
+      } else {
+        xhr.open("GET", "/update?relay=OFF", true);
+      }
+      xhr.send();
+    }
+  </script>
+</html>

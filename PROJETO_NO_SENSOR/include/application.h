@@ -26,7 +26,8 @@ void init_App()
     }
     preferences.putBool("data_modulo", data_modulo);
     preferences.end();
-
+    data_now();
+    Serial.println(data_hora);
     // Incia o Wifi
      init_Wifi_AP();
     //init_Wifi_NM();

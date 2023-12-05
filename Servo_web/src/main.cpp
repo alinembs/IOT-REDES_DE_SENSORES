@@ -5,7 +5,7 @@
 *********/
 #include <ESPAsyncWebServer.h>
 #include <WiFi.h>
-#include <Servo.h>
+#include <ESP32Servo.h>
 
 Servo myservo;
 Servo servo2;
@@ -19,8 +19,10 @@ static const int servoPin1 = 27;
 
 // Replace with your network credentials
 
-const char *ssid = "WifiEsp";
-const char *password = "88599380";
+const char *ssid = "ESP-DASHBOARD";
+const char *password = "123456789";
+// const char *ssid = "WifiEsp";
+// const char *password = "88599380";
 // Set web server port number to 80
 
 AsyncWebServer server(80);
@@ -68,7 +70,7 @@ const char index_html[] PROGMEM = R"rawliteral(
    
     function servo(pos) {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/slider?value="+pos, true);
+        xhr.open("GET", "/slider?value_base="+pos, true);
         xhr.send();
      
     }
@@ -82,7 +84,7 @@ const char index_html[] PROGMEM = R"rawliteral(
    
     function servo1(pos) {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "/slider?value1="+pos, true);
+        xhr.open("GET", "/slider?value_hori="+pos, true);
         xhr.send();
      
     }
@@ -96,9 +98,17 @@ const char index_html[] PROGMEM = R"rawliteral(
 void setup()
 {
     Serial.begin(115200);
+    // Allow allocation of all timers
+	ESP32PWM::allocateTimer(0);
+	ESP32PWM::allocateTimer(1);
+	ESP32PWM::allocateTimer(2);
+	ESP32PWM::allocateTimer(3);
+	myservo.setPeriodHertz(50);    // standard 50 hz servo
+	myservo.attach(servoPin, 1000, 2000);
+    //myservo.attach(servoPin); // attaches the servo on the servoPin to the servo object
+    servo2.setPeriodHertz(50);
 
-    myservo.attach(servoPin); // attaches the servo on the servoPin to the servo object
-    servo2.attach(servoPin1);
+    servo2.attach(servoPin1,1000,2000);
 
     // Connect to Wi-Fi network with SSID and password
     Serial.print("Connecting to ");
@@ -122,14 +132,14 @@ void setup()
     String message;
     String message1;
    
-    if (request->hasParam("value")) {
+    if (request->hasParam("value_base")) {
       
-      message = request->getParam("value")->value();
+      message = request->getParam("value_base")->value();
       Serial.println("Position Servo 1:"+message);
     myservo.write(message.toInt());
     }
-    if ((request->hasParam("value1"))) {
-      message1 = request->getParam("value1")->value();
+    if ((request->hasParam("value_hori"))) {
+      message1 = request->getParam("value_hori")->value();
   Serial.println("Position Servo 2:"+message1);
     servo2.write(message1.toInt());}
     else {

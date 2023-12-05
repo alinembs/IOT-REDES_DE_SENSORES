@@ -1,0 +1,34 @@
+{
+	"folders": [
+		{
+			"path": "../../../../Downloads/drive-download-20230330T170433Z-001"
+		},
+		{
+			"name": "Servo_Teste",
+			"path": "../Servo_Teste"
+		},
+		{
+			"name": "TMP_UHM",
+			"path": "../TMP_UHM"
+		},
+		{
+			"name": "Servo_TMP_UMH",
+			"path": "../Servo_TMP_UMH"
+		},
+		{
+			"name": "Calibration_UMH",
+			"path": "../Calibration_UMH"
+		},
+		{
+			"name": "Web_Dados",
+			"path": "."
+		},
+		{
+			"name": "BLIND",
+			"path": "../BLIND"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "drive-download-20230330T170433Z-001"
+	}
+}

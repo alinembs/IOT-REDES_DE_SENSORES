@@ -3,7 +3,7 @@
 
 #define AOUT_PIN 36 // ESP32 pin GIOP36 (ADC0) that connects to AOUT pin of moisture sensor
 #define THRESHOLD 1000 // CHANGE YOUR THRESHOLD HERE
-#define ServoPin 26
+#define ServoPin 27
 
 Servo myservo;
 
