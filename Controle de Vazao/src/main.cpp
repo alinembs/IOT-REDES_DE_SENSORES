@@ -16,7 +16,7 @@ long currentMillis = 0;
 long previousMillis = 0;
 int interval = 1000;
 boolean ledState = LOW;
-float calibrationFactor = 6.5;
+float calibrationFactor = 1;
 volatile byte pulseCount;
 byte pulse1Sec = 0;
 float flowRate;
@@ -171,7 +171,30 @@ void flowrate_cv()
 }
 void total_water()
 {
+  Serial.println(total_water_state);
   server.send_P(200, "text/plain", total_water_state.c_str());
+}
+void handleCalibrador()
+{
+
+  String message = "";
+
+  if (server.arg("valor") == "")
+  { // Parameter not found
+
+    message = "Argument not found";
+  }
+  else
+  { // Parameter found
+
+    message += server.arg("valor"); // Gets the value of the query parameter
+    float valor = message.toFloat();
+    calibrationFactor = valor;
+    Serial.println("Factor de Calibração");
+    Serial.println(valor);
+  }
+
+  server.send(200, "text / plain", "OK"); // Returns the HTTP response
 }
 void init_Server()
 {
@@ -180,6 +203,7 @@ void init_Server()
   server.on("/flowrate", HTTP_GET, flowrate_cv);
   // server.on("/temperaturef", HTTP_GET, sensor_TemperatureF);
   server.on("/total", HTTP_GET, total_water);
+  server.on("/enviar",HTTP_GET,handleCalibrador);
   server.onNotFound(handleNotFound);
   // Inicia o servidor
   server.begin();

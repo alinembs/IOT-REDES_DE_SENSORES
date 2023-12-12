@@ -2,7 +2,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
-  <title>ESP32 (LoRa + Server)</title>
+  <title>ESP32 (Calibrador do Sensor de Fluxo)</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <style>
     body {
@@ -25,16 +25,30 @@
     p { font-size: 1.2rem; }
     .units { font-size: 1.2rem; }
     .readings { font-size: 2.0rem; }
+
+    .form { background-color: aquamarine;
+       padding: 7%;
+      border-radius: 5%;
+      height: max-content;
+      width: min-content;
+      display: inline-grid;
+
+
+    }
   </style>
 </head>
 <body>
 <main>
+    <p class="form">
+      <br>Calibrador: <input type='text'  id="valor"><br>
+     <br><button onclick="Submit()">Enviar</button><br>
+    </p>
   <p>
-    <i class="fas fa-tint" style="color:#059e8a;"></i> FlowRate: <span id="flowrate" class="readings">%flowrate%</span>
+    <i></i> FlowRate: <span id="flowrate" class="readings">%flowrate%</span>
     <sup>L/min</sup>
   </p>
   <p>
-    <i class="fas fa-tint" style="color:#00add6;"></i> Total de Agua: <span id="total" class="readings">total%</span>
+    <i ></i> Total de Água: <span id="total" class="readings">%total%</span>
   <sup>L/L</sup>
   </p>
 
@@ -51,6 +65,14 @@ function updateValues(value) {
     }
   };
   xhttp.open("GET", "/" + value, true);
+  xhttp.send();
+}
+function Submit()
+{
+  var value = document.getElementById("valor").value;
+  console.log(value);
+  var xhttp = new XMLHttpRequest();
+  xhttp.open("GET", "/enviar?valor=" + value, true);
   xhttp.send();
 }
 </script>
