@@ -10,7 +10,7 @@ String total_water_state = " ";
 long currentMillis = 0;
 long previousMillis = 0;
 int interval = 1000;
-float calibrationFactor = 6.5;
+float calibrationFactor = 8.9;
 volatile byte pulseCount;
 byte pulse1Sec = 0;
 float flowRate;

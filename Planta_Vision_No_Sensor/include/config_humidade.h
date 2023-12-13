@@ -9,8 +9,8 @@
 #define pessimo 50
 
 
-#define wet 210
-#define dry 510
+#define wet 4095
+#define dry 0
 
 #define AOUT_PIN 36// ESP32 pin GIOP36 (ADC0) that connects to AOUT pin of moisture sensor
 
