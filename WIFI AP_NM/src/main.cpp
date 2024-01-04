@@ -2,8 +2,8 @@
 #include <WiFi.h>
 #include <WiFiClient.h>
 
-const char *ssid = "ESP-DASHBOARD";
-const char *password = "123456789";
+const char *ssid = "ESPWIFI";
+const char *password = "1234567890";
 
 /* Put IP Address details */
 IPAddress local_ip(192, 168, 1, 1);
