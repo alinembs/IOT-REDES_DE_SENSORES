@@ -247,10 +247,34 @@ void handleBombArg()
   // Bomba_Agua(message);
   server.send(200, "text / plain", "OK"); // Returns the HTTP response
 }
+void sensorsdata()
+{
 
+  String json = "{\"temperatura_c\":";
+  json += readDSTemperatureC();
+  // json += "}";
+  json += ",";
+  json += "\"temperatura_f\":";
+  json += readDSTemperatureF();
+  // json += "}";
+    json += ",";
+  json += "\"umidade\":";
+  json += onSensorChange();
+  // json += "}";
+  json += ",";
+  json += "\"flowrate\":";
+  json += flowrate_state;
+  // json += "}";
+  json += ",";
+  json += "\"totalwater\":";
+  json += total_water_state;
+  json += "}";
+
+  server.send(200, "application/json", json);
+}
 void json_Tempc()
 {
-  String json =  "{\"temperatura_c\":" ;
+  String json = "{\"temperatura_c\":";
   json += readDSTemperatureC();
   json += "}";
   server.send(200, "application/json", json);
@@ -303,9 +327,9 @@ void init_Server()
   server.on("/total", HTTP_GET, total_water);
 
   // Rota dos Sensores
-  server.on("/temperature_f", HTTP_GET,json_Tempf);
-  server.on("/temperature_c", HTTP_GET,json_Tempc);
-  server.on("/umidade", HTTP_GET,json_umidade );
+  server.on("/temperature_f", HTTP_GET, json_Tempf);
+  server.on("/temperature_c", HTTP_GET, json_Tempc);
+  server.on("/umidade", HTTP_GET, json_umidade);
 
   // Funções para Mandar o RaspiBerry Pi controlor o Braco e ou Bomba
 
@@ -313,6 +337,9 @@ void init_Server()
   server.on("/servo_hori", HTTP_GET, handleServoHORI);
   server.on("/servo_vert", HTTP_GET, handleServoVERT);
   server.on("/bomba", HTTP_GET, handleBombArg);
+
+  //Rota para Enviar os dados de todos os sensores:
+  server.on("/sensor_node_data",HTTP_GET,sensorsdata);
 
   //  Adiciona a função "handle_not_found" quando o servidor estiver offline
   server.onNotFound(handleNotFound);
