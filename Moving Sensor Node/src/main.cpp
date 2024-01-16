@@ -11,13 +11,13 @@
 void setup() {
 
 Serial.begin(115200);
-
+pinMode(2, OUTPUT);
 init_RTC();
 initSDCard();
 initSPIFFS();
 init_bomba_sensorfluxo();
 init_braco_robotico();
-init_Wifi_NM();
+init_Wifi_NM2();
 init_Server();
 
 sensors.begin();

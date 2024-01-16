@@ -14,8 +14,13 @@
 
 #include <SPI.h>
 
-const char *ssid = "ESPWIFI";
-const char *password = "1234567890";
+const int ledPin = 2; // Pino do LED interno do ESP32
+
+const char *rede1 = "ESPWIFI";
+const char *password1 = "1234567890";
+
+const char *rede2 = "REDE IOT";
+const char *password2 = "L@ps1234";
 
 const char *PARAM_MODE = "state";
 const char *PARAM_FILE = "value";
@@ -43,7 +48,7 @@ void init_Wifi_AP()
 {
   Serial.println("Configuring access point...");
   delay(1);
-  if (!WiFi.softAP(ssid, password))
+  if (!WiFi.softAP(rede1, password1))
   {
     log_e("Soft AP creation failed.");
     while (1)
@@ -68,7 +73,7 @@ void init_Wifi_NM()
 {
   while (tentativas < maxTentativas)
   {
-    WiFi.begin(ssid, password);
+    WiFi.begin(rede1, password1);
 
     int contagemTempo = 0;
     while (WiFi.status() != WL_CONNECTED && contagemTempo < 20)
@@ -96,7 +101,69 @@ void init_Wifi_NM()
       ESP.restart();
     }
   }
+  // Set your preferred server name, if you use "plantavision" the address would be http://plantavision.local/
+  if (!MDNS.begin(servername))
+  {
+    Serial.println(F("Error setting up MDNS responder!"));
+    ESP.restart();
+  }
 
+  Serial.println("MDNS started");
+
+  IPAddress serverIp;
+  Serial.println("Host address resolved:");
+  Serial.println(serverIp.toString());
+  IPAddress myIP = WiFi.localIP();
+  Serial.print("IP address: ");
+  Serial.println(myIP);
+}
+bool conectarWiFi(const char *ssid, const char *password)
+{
+  Serial.println("Conectando ao WiFi...");
+  WiFi.begin(ssid, password);
+
+  int tentativas = 0;
+  while (WiFi.status() != WL_CONNECTED && tentativas < 5)
+  {
+    delay(1000);
+    Serial.print(".");
+    tentativas++;
+  }
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    Serial.println("\nConexão estabelecida!");
+    return true;
+  }
+  else
+  {
+    Serial.println("\nFalha ao conectar ao WiFi!");
+    return false;
+  }
+}
+
+// Iniciar Wifi no Modo Normal Versão 2
+void init_Wifi_NM2()
+{
+  // Tenta conectar ao primeiro WiFi
+  if (conectarWiFi(rede1, password1))
+  {
+    Serial.println("Conectado ao WiFi 1");
+    digitalWrite(ledPin, HIGH); // Liga o LED
+  }
+  else
+  {
+    // Se a conexão ao primeiro WiFi falhar, tenta conectar ao segundo WiFi
+    if (conectarWiFi(rede2, password2))
+    {
+      Serial.println("Conectado ao WiFi 2");
+      digitalWrite(ledPin, HIGH); // Liga o LED
+    }
+    else
+    {
+      Serial.println("Falha ao conectar ao WiFi. Reiniciando...");
+      ESP.restart(); // Reinicia o ESP32
+    }
+  }
   // Set your preferred server name, if you use "plantavision" the address would be http://plantavision.local/
   if (!MDNS.begin(servername))
   {
@@ -257,7 +324,7 @@ void sensorsdata()
   json += "\"temperatura_f\":";
   json += readDSTemperatureF();
   // json += "}";
-    json += ",";
+  json += ",";
   json += "\"umidade\":";
   json += onSensorChange();
   // json += "}";
@@ -338,8 +405,8 @@ void init_Server()
   server.on("/servo_vert", HTTP_GET, handleServoVERT);
   server.on("/bomba", HTTP_GET, handleBombArg);
 
-  //Rota para Enviar os dados de todos os sensores:
-  server.on("/sensor_node_data",HTTP_GET,sensorsdata);
+  // Rota para Enviar os dados de todos os sensores:
+  server.on("/sensor_node_data", HTTP_GET, sensorsdata);
 
   //  Adiciona a função "handle_not_found" quando o servidor estiver offline
   server.onNotFound(handleNotFound);
