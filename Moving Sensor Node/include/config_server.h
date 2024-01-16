@@ -31,7 +31,7 @@ int tentativas = 0;
 
 WebServer server(80);
 
-#define servername "movingsensornode" // Define the name to server...
+#define servername "MWSN" // Define the name to server...
 
 // /* Put IP Address details */
 // IPAddress local_IP(192, 168, 1, 2);
@@ -49,7 +49,7 @@ void init_Wifi_AP()
     while (1)
       ;
   }
-  // Set your preferred server name, if you use "plantavision" the address would be http://movingsensornode.local/
+  // Set your preferred server name, if you use "plantavision" the address would be http://MWSN.local/
   if (!MDNS.begin(servername))
   {
     Serial.println(F("Error setting up MDNS responder!"));
@@ -319,5 +319,5 @@ void init_Server()
   // Inicia o servidor
   server.begin();
 
-  Serial.println("Server MSN started");
+  Serial.println("Server MWSN started");
 }

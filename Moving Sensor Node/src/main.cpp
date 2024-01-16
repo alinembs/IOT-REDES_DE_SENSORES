@@ -21,7 +21,7 @@ init_Wifi_NM();
 init_Server();
 
 sensors.begin();
-Serial.println("Moving Sensor Node");
+Serial.println("Moving Wireless Sensor Node");
 Serial.println("Aplicação Iniciada!");
 
 }
