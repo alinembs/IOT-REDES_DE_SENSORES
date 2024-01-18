@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#include "config_data_hora_sd.h"
- 
+// #include "config_data_hora_sd.h"
+#include "config_server.h" 
 
 // unsigned long lastTime = 0;
 // // Timer set to 10 minutes (600000)

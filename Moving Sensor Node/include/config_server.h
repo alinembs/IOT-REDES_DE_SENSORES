@@ -1,5 +1,5 @@
 
-/*Biblioteca Servo | Bomba | Temperatura | Umidade | Sensor de Fluxo */
+/*Biblioteca Servo | Bomba | Temperatura | Umidade | Sensor de Fluxo | RTC | SD | SPIFSS*/
 
 #include "config_braco.h"
 #include "config_bomba.h"
@@ -13,6 +13,21 @@
 #include <WiFiClient.h>
 
 #include <SPI.h>
+#include "SPIFFS.h"
+
+#include "FS.h"
+#include "SD.h"
+
+#include "SPI.h"
+
+#include <Wire.h>
+#include <RTClib.h>
+
+#include <Preferences.h>
+Preferences preferences;
+
+RTC_DS3231 rtc;
+String data_hora = "";
 
 const int ledPin = 2; // Pino do LED interno do ESP32
 
@@ -34,7 +49,231 @@ const char *PARAM_VERT = "value_vert";
 const int maxTentativas = 5;
 int tentativas = 0;
 
+String Status_RTC = "";
+String Status_SD = "";
+String Status_SPIFSS = "";
+
 WebServer server(80);
+
+
+// Iniciar o Cartão de Memoria
+void initSDCard()
+{
+  if (!SD.begin(5))
+  {
+    Serial.println("Card Mount Failed");
+    Status_SD = "FALSE";
+    return;
+  }
+  uint8_t cardType = SD.cardType();
+
+  if (cardType == CARD_NONE)
+  {
+    Serial.println("No SD card attached");
+    return;
+  }
+
+  Serial.print("SD Card Type: ");
+  if (cardType == CARD_MMC)
+  {
+    Serial.println("MMC");
+  }
+  else if (cardType == CARD_SD)
+  {
+    Serial.println("SDSC");
+  }
+  else if (cardType == CARD_SDHC)
+  {
+    Serial.println("SDHC");
+  }
+  else
+  {
+    Serial.println("UNKNOWN");
+  }
+  uint64_t cardSize = SD.cardSize() / (1024 * 1024);
+  Serial.printf("SD Card Size: %lluMB\n", cardSize);
+  Status_SD = "TRUE";
+}
+// Inicia o SPIFFS
+void initSPIFFS()
+{
+  if (!SPIFFS.begin())
+  {
+    Serial.println("An error has occurred while mounting SPIFFS");
+    Status_SPIFSS = "FALSE";
+  }
+  else
+  {
+    Serial.println("SPIFFS mounted successfully");
+    Status_SPIFSS = "TRUE";
+  }
+
+  // File file = SPIFFS.open("/index.html", "r");
+
+  // file.close();
+}
+void handleNotFound()
+{
+  server.send(404, "text/plain", "Página não encontrada");
+}
+// Pegar arquivos do SD
+bool loadFromSD(fs::FS &fs, String path, String dataType)
+{
+  Serial.print("Requested page -> ");
+  Serial.println(path);
+  if (fs.exists(path))
+  {
+    File dataFile = fs.open(path, "r");
+    if (!dataFile)
+    {
+      handleNotFound();
+      return false;
+    }
+
+    if (server.streamFile(dataFile, dataType) != dataFile.size())
+    {
+      Serial.println("Sent less data than expected!");
+    }
+    else
+    {
+      Serial.println("Page served!");
+    }
+
+    dataFile.close();
+  }
+  else
+  {
+    handleNotFound();
+    return false;
+  }
+  return true;
+}
+// Pegar dados do SPIFFS
+bool loadFromSPIFFS(String path, String dataType)
+{
+  Serial.print("Requested page -> ");
+  Serial.println(path);
+  if (SPIFFS.exists(path))
+  {
+    File dataFile = SPIFFS.open(path, "r");
+    if (!dataFile)
+    {
+      handleNotFound();
+      return false;
+    }
+
+    if (server.streamFile(dataFile, dataType) != dataFile.size())
+    {
+      Serial.println("Sent less data than expected!");
+    }
+    else
+    {
+      Serial.println("Page served!");
+    }
+
+    dataFile.close();
+  }
+  else
+  {
+    handleNotFound();
+    return false;
+  }
+  return true;
+}
+// Possiblitar baixar arquivos que estão no SD para o Navegador
+void SD_file_download(String filename)
+{
+  File download = SD.open("/" + filename);
+  if (download)
+  {
+    server.sendHeader("Content-Type", "text/text");
+    server.sendHeader("Content-Disposition", "attachment; filename=" + filename);
+    server.sendHeader("Connection", "close");
+    server.streamFile(download, "application/octet-stream");
+    download.close();
+  }
+}
+// Escrever dados em um arquivo dentro do SD/SPIFFS
+void writeFile(fs::FS &fs, const char *path, const char *message)
+{
+  Serial.printf("Writing file: %s\n", path);
+
+  File file = fs.open(path, FILE_WRITE);
+  if (!file)
+  {
+    Serial.println("Failed to open file for writing");
+    return;
+  }
+  if (file.print(message))
+  {
+    Serial.println("File written");
+  }
+  else
+  {
+    Serial.println("Write failed");
+  }
+  file.close();
+}
+// Adicionar dados a arquivos já criados dentro do SD/SPIFFS
+void appendFile(fs::FS &fs, const char *path, const char *message)
+{
+  Serial.printf("Appending to file: %s\n", path);
+
+  File file = fs.open(path, FILE_APPEND);
+  if (!file)
+  {
+    Serial.println("Failed to open file for appending");
+    return;
+  }
+  if (file.println(message))
+  {
+    Serial.println("Message appended");
+  }
+  else
+  {
+    Serial.println("Append failed");
+  }
+  file.close();
+}
+// Inicializa o RTC e Ajusta a Data-Hora do Esp32 se for a primeira vez
+void init_RTC()
+{
+  preferences.begin("my-app", false);
+  Wire.begin();
+  if (!rtc.begin())
+  {
+    Serial.println("Não foi possível encontrar RTC");
+    Status_RTC = "FALSE";
+    //while(1);
+  }
+else
+  {
+    bool data_modulo = preferences.getBool("data_modulo", false);
+    if (data_modulo == false)
+    {
+
+      rtc.adjust(DateTime(__DATE__, __TIME__));
+      Serial.println("Data e hora definidas!");
+      data_modulo = true;
+    }
+    preferences.putBool("data_modulo", data_modulo);
+    preferences.end();
+    Status_RTC = "TRUE";
+  }
+}
+
+// Pega a Data-Hora Atual e salva em uma Variavel Global
+String data_now()
+{
+  DateTime now = rtc.now();
+  // Formato da data: DD/MM/AAAA
+  String data = String(now.day()) + "/" + String(now.month()) + "/" + String(now.year());
+  //Serial.println(data);
+  // Formato da hora: HH:MM:SS
+  String hora = String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
+  //Serial.println(hora);
+  return String(data + '~' + hora);
+}
 
 #define servername "MWSN" // Define the name to server...
 
@@ -199,10 +438,7 @@ void init_Wifi_NM2()
 
 // }
 
-void handleNotFound()
-{
-  server.send(404, "text/plain", "Página não encontrada");
-}
+
 // Manipulador para a página principal
 void handleRoot()
 {
@@ -314,6 +550,20 @@ void handleBombArg()
   // Bomba_Agua(message);
   server.send(200, "text / plain", "OK"); // Returns the HTTP response
 }
+void config_esp32()
+{
+ String json = "{\"CARTAO SD\":";
+  json += Status_SD;
+  json += ",";
+  json += "\"SPIFFS\":";
+  json += Status_SPIFSS;
+  json += ",";
+  json += "\"RTC\":";
+  json += Status_RTC;
+  json += "}";
+
+  server.send(200, "application/json", json);
+}
 void sensorsdata()
 {
 
@@ -375,7 +625,13 @@ void total_water()
   json += "}";
   server.send(200, "application/json", json);
 }
-
+void datetime()
+{
+  String json = "{\"datatime\":";
+  json += data_now();
+  json += "}";
+  server.send(200, "application/json", json);
+}
 void handleSN()
 {
   server.send(200, "text / plain", "OK"); // Returns the HTTP response
@@ -407,7 +663,11 @@ void init_Server()
 
   // Rota para Enviar os dados de todos os sensores:
   server.on("/sensor_node_data", HTTP_GET, sensorsdata);
+  server.on("/config_esp32", HTTP_GET, config_esp32);
 
+  //Rota para retornar data e hora
+
+    server.on("/data_rtc", HTTP_GET, datetime);
   //  Adiciona a função "handle_not_found" quando o servidor estiver offline
   server.onNotFound(handleNotFound);
   // Inicia o servidor
