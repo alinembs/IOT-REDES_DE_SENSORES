@@ -1,5 +1,5 @@
 
-/*Biblioteca Servo | Bomba | Temperatura | Umidade | Sensor de Fluxo | RTC | SD | SPIFSS*/
+/*Biblioteca Servo | Bomba | Temperatura | Umidade | Sensor de Fluxo | RTC | SD | SPIFSS| WIFI | SERVIDOR */
 
 #include "config_braco.h"
 #include "config_bomba.h"
@@ -45,6 +45,12 @@ const char *PARAM_BOMBA = "status";
 const char *PARAM_BASE = "value_base";
 const char *PARAM_HORI = "value_hori";
 const char *PARAM_VERT = "value_vert";
+
+const char *apiToken = "AGRICULTURE_PRECISION_V2_MONOGRAFIA_UEMA_2024";
+
+const char *username = "LAPS_IOT";
+const char *userPassword = "L@ps1234";
+
 
 const int maxTentativas = 5;
 int tentativas = 0;
@@ -636,6 +642,22 @@ void handleSN()
 {
   server.send(200, "text / plain", "OK"); // Returns the HTTP response
 }
+//Rotas para Autenticaçao e Segurança no servido ESP32
+void AuthentificationESP32() {
+  if (!server.authenticate(username, userPassword)) {
+    return server.requestAuthentication();
+  }
+  // Lógica do manipulador de solicitação para usuários autenticados
+  server.send(200, "text/plain", "Acesso permitido ao recurso protegido");
+}
+void Requisicao() {
+   // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken) {
+    server.send(403, "text/plain", "Acesso negado");
+  }
+  server.send(200, "text/plain", "Acesso permitido ao recurso protegido");
+}
+
 // Inicializa o Servidor para controla o braço e a bomba
 void init_Server()
 {
@@ -668,8 +690,20 @@ void init_Server()
   //Rota para retornar data e hora
 
     server.on("/data_rtc", HTTP_GET, datetime);
+
+  // Rota protegida por autenticação
+  server.on("/login", HTTP_GET, AuthentificationESP32);
+   // Rota protegida por token de API
+  server.on("/teste",HTTP_GET,Requisicao);
+
   //  Adiciona a função "handle_not_found" quando o servidor estiver offline
   server.onNotFound(handleNotFound);
+     //here the list of headers to be recorded
+  const char * headerkeys[] = {"User-Agent", "Cookie", "X-Api-Token"} ;
+  size_t headerkeyssize = sizeof(headerkeys) / sizeof(char*);
+  //ask server to track these headers
+  server.collectHeaders(headerkeys, headerkeyssize);
+
   // Inicia o servidor
   server.begin();
 
