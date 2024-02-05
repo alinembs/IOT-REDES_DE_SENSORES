@@ -51,7 +51,6 @@ const char *apiToken = "AGRICULTURE_PRECISION_V2_MONOGRAFIA_UEMA_2024";
 const char *username = "LAPS_IOT";
 const char *userPassword = "L@ps1234";
 
-
 const int maxTentativas = 5;
 int tentativas = 0;
 
@@ -60,7 +59,6 @@ String Status_SD = "";
 String Status_SPIFSS = "";
 
 WebServer server(80);
-
 
 // Iniciar o Cartão de Memoria
 void initSDCard()
@@ -250,9 +248,9 @@ void init_RTC()
   {
     Serial.println("Não foi possível encontrar RTC");
     Status_RTC = "FALSE";
-    //while(1);
+    // while(1);
   }
-else
+  else
   {
     bool data_modulo = preferences.getBool("data_modulo", false);
     if (data_modulo == false)
@@ -274,10 +272,10 @@ String data_now()
   DateTime now = rtc.now();
   // Formato da data: DD/MM/AAAA
   String data = String(now.day()) + "/" + String(now.month()) + "/" + String(now.year());
-  //Serial.println(data);
-  // Formato da hora: HH:MM:SS
+  // Serial.println(data);
+  //  Formato da hora: HH:MM:SS
   String hora = String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
-  //Serial.println(hora);
+  // Serial.println(hora);
   return String(data + '~' + hora);
 }
 
@@ -444,16 +442,23 @@ void init_Wifi_NM2()
 
 // }
 
-
+// void AtualizaoOTA()
+// {
+//   loadFromSPIFFS("/mwsn-app/index.html", "text/html");
+// }
 // Manipulador para a página principal
 void handleRoot()
 {
-  server.send(200, "text/plain", "Planta Vision - BACK_END");
+  server.send(200, "text/plain", "MWSN - ESP32");
 }
 
 void handleGenericArgs()
 { // Handler
-
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
   String message = "Number of args received:";
   message += server.args(); // Get number of parameters
   message += "\n";          // Add a new line
@@ -471,7 +476,11 @@ void handleGenericArgs()
 
 void handleServoBASE()
 {
-
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
   String message = "";
 
   if (server.arg(PARAM_BASE) == "")
@@ -493,7 +502,11 @@ void handleServoBASE()
 }
 void handleServoHORI()
 {
-
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
   String message = "";
 
   if (server.arg(PARAM_HORI) == "")
@@ -515,6 +528,11 @@ void handleServoHORI()
 }
 void handleServoVERT()
 {
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
 
   String message = "";
 
@@ -538,6 +556,11 @@ void handleServoVERT()
 
 void handleBombArg()
 {
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
 
   String message = "";
 
@@ -558,7 +581,12 @@ void handleBombArg()
 }
 void config_esp32()
 {
- String json = "{\"CARTAO SD\":";
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
+  String json = "{\"CARTAO SD\":";
   json += Status_SD;
   json += ",";
   json += "\"SPIFFS\":";
@@ -572,7 +600,11 @@ void config_esp32()
 }
 void sensorsdata()
 {
-
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
   String json = "{\"temperatura_c\":";
   json += readDSTemperatureC();
   // json += "}";
@@ -597,6 +629,11 @@ void sensorsdata()
 }
 void json_Tempc()
 {
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
   String json = "{\"temperatura_c\":";
   json += readDSTemperatureC();
   json += "}";
@@ -604,6 +641,11 @@ void json_Tempc()
 }
 void json_Tempf()
 {
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
   String json = "{\"temperatura_f\":";
   json += readDSTemperatureF();
   json += "}";
@@ -611,6 +653,11 @@ void json_Tempf()
 }
 void json_umidade()
 {
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
   String json = "{\"umidade\":";
   json += onSensorChange();
   json += "}";
@@ -619,6 +666,11 @@ void json_umidade()
 
 void flowrate_cv()
 {
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
   String json = "{\"flowrate\":";
   json += flowrate_state;
   json += "}";
@@ -626,6 +678,11 @@ void flowrate_cv()
 }
 void total_water()
 {
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
   String json = "{\"totalwater\":";
   json += total_water_state;
   json += "}";
@@ -633,6 +690,11 @@ void total_water()
 }
 void datetime()
 {
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
+    server.send(403, "text/plain", "Acesso negado");
+  }
   String json = "{\"datatime\":";
   json += data_now();
   json += "}";
@@ -642,17 +704,23 @@ void handleSN()
 {
   server.send(200, "text / plain", "OK"); // Returns the HTTP response
 }
-//Rotas para Autenticaçao e Segurança no servido ESP32
-void AuthentificationESP32() {
-  if (!server.authenticate(username, userPassword)) {
+// Rotas para Autenticaçao e Segurança no servido ESP32
+void AuthentificationESP32()
+{
+  if (!server.authenticate(username, userPassword))
+  {
     return server.requestAuthentication();
   }
+  loadFromSPIFFS("/mwsn-app/index.html", "text/html");
   // Lógica do manipulador de solicitação para usuários autenticados
-  server.send(200, "text/plain", "Acesso permitido ao recurso protegido");
+  // server.send(200, "text/plain", "Acesso permitido ao recurso protegido");
+
 }
-void Requisicao() {
-   // Verificar a chave de API na header
-  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken) {
+void Requisicao()
+{
+  // Verificar a chave de API na header
+  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+  {
     server.send(403, "text/plain", "Acesso negado");
   }
   server.send(200, "text/plain", "Acesso permitido ao recurso protegido");
@@ -665,7 +733,7 @@ void init_Server()
   // Adiciona a função "handle_on_connect" quando o servidor estiver online
   server.on("/", HTTP_GET, handleRoot);
 
-  server.on("/autenticar", HTTP_GET, handleRoot);
+  // server.on("/autenticar", HTTP_GET, handleRoot);
 
   // Rota  do Controle de FLuxo
   server.on("/flowrate", HTTP_GET, flowrate_cv);
@@ -687,21 +755,21 @@ void init_Server()
   server.on("/sensor_node_data", HTTP_GET, sensorsdata);
   server.on("/config_esp32", HTTP_GET, config_esp32);
 
-  //Rota para retornar data e hora
+  // Rota para retornar data e hora
 
-    server.on("/data_rtc", HTTP_GET, datetime);
+  server.on("/data_rtc", HTTP_GET, datetime);
 
   // Rota protegida por autenticação
   server.on("/login", HTTP_GET, AuthentificationESP32);
-   // Rota protegida por token de API
-  server.on("/teste",HTTP_GET,Requisicao);
+  // Rota protegida por token de API
+  server.on("/teste", HTTP_GET, Requisicao);
 
   //  Adiciona a função "handle_not_found" quando o servidor estiver offline
   server.onNotFound(handleNotFound);
-     //here the list of headers to be recorded
-  const char * headerkeys[] = {"User-Agent", "Cookie", "X-Api-Token"} ;
-  size_t headerkeyssize = sizeof(headerkeys) / sizeof(char*);
-  //ask server to track these headers
+  // here the list of headers to be recorded
+  const char *headerkeys[] = {"User-Agent", "Cookie", "X-Api-Token"};
+  size_t headerkeyssize = sizeof(headerkeys) / sizeof(char *);
+  // ask server to track these headers
   server.collectHeaders(headerkeys, headerkeyssize);
 
   // Inicia o servidor
