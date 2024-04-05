@@ -424,29 +424,14 @@ void init_Wifi_NM2()
   Serial.println(myIP);
 }
 
-// void init_Wifi_NM1()
-// {
-//   if (!WiFi.config(local_IP, gateway, subnet)) {
-//     Serial.println("STA Failed to configure");
-//   }
-
-//   WiFi.begin(ssid, password);
-//   while (WiFi.status() != WL_CONNECTED) {
-//     delay(1000);
-//     Serial.println("Conectando ao WiFi...");
-//   }
-//   Serial.println("Conectado ao WiFi!");
-//   IPAddress myIP = WiFi.localIP();
-//     Serial.print("IP address: ");
-//     Serial.println(myIP);
-
-// }
 
 // void AtualizaoOTA()
 // {
 //   loadFromSPIFFS("/mwsn-app/index.html", "text/html");
 // }
 // Manipulador para a página principal
+
+
 void handleRoot()
 {
   server.send(200, "text/plain", "MWSN - ESP32");
