@@ -29,8 +29,8 @@ Preferences preferences;
 RTC_DS3231 rtc;
 String data_hora = "";
 
-const int ledPin = 2; // Pino do LED interno do ESP32
-
+const int ledPin = 15; // Pino do LED interno do ESP32
+const int ledErroPin = 2; //Pino do LED DE ERRO 
 const char *rede1 = "ESPWIFI";
 const char *password1 = "1234567890";
 
@@ -57,7 +57,7 @@ int tentativas = 0;
 String Status_RTC = "";
 String Status_SD = "";
 String Status_SPIFSS = "";
-
+int Erros = 0;
 WebServer server(80);
 
 // Iniciar o Cartão de Memoria
@@ -67,6 +67,7 @@ void initSDCard()
   {
     Serial.println("Card Mount Failed");
     Status_SD = "FALSE";
+    Erros ++;
     return;
   }
   uint8_t cardType = SD.cardType();
@@ -105,6 +106,7 @@ void initSPIFFS()
   {
     Serial.println("An error has occurred while mounting SPIFFS");
     Status_SPIFSS = "FALSE";
+    Erros++;
   }
   else
   {
@@ -248,6 +250,7 @@ void init_RTC()
   {
     Serial.println("Não foi possível encontrar RTC");
     Status_RTC = "FALSE";
+    Erros++;
     // while(1);
   }
   else
@@ -701,15 +704,18 @@ void AuthentificationESP32()
   // server.send(200, "text/plain", "Acesso permitido ao recurso protegido");
 
 }
-// void Requisicao()
-// {
-//   // Verificar a chave de API na header
-//   if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
-//   {
-//     server.send(403, "text/plain", "Acesso negado");
-//   }
-//   server.send(200, "text/plain", "Acesso permitido ao recurso protegido");
-// }
+
+void ErrosNaInicializacao()
+{
+
+if (Erros > 0 )
+{
+ digitalWrite(ledErroPin, HIGH); // Liga o LED
+}
+else{
+  digitalWrite(ledErroPin,LOW);
+}
+}
 
 // Inicializa o Servidor para controla o braço e a bomba
 void init_Server()
@@ -759,6 +765,7 @@ void init_Server()
 
   // Inicia o servidor
   server.begin();
-
+  ErrosNaInicializacao();
   Serial.println("Server MWSN started");
 }
+

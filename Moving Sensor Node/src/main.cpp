@@ -11,7 +11,8 @@
 void setup() {
 
 Serial.begin(115200);
-pinMode(2, OUTPUT);
+pinMode(15, OUTPUT);
+pinMode(2,OUTPUT);
 init_RTC();
 initSDCard();
 initSPIFFS();
