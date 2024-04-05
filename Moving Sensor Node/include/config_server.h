@@ -716,15 +716,15 @@ void AuthentificationESP32()
   // server.send(200, "text/plain", "Acesso permitido ao recurso protegido");
 
 }
-void Requisicao()
-{
-  // Verificar a chave de API na header
-  if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
-  {
-    server.send(403, "text/plain", "Acesso negado");
-  }
-  server.send(200, "text/plain", "Acesso permitido ao recurso protegido");
-}
+// void Requisicao()
+// {
+//   // Verificar a chave de API na header
+//   if (!server.hasHeader("X-Api-Token") || server.header("X-Api-Token") != apiToken)
+//   {
+//     server.send(403, "text/plain", "Acesso negado");
+//   }
+//   server.send(200, "text/plain", "Acesso permitido ao recurso protegido");
+// }
 
 // Inicializa o Servidor para controla o braço e a bomba
 void init_Server()
@@ -762,7 +762,7 @@ void init_Server()
   // Rota protegida por autenticação
   server.on("/login", HTTP_GET, AuthentificationESP32);
   // Rota protegida por token de API
-  server.on("/teste", HTTP_GET, Requisicao);
+  // server.on("/teste", HTTP_GET, Requisicao);
 
   //  Adiciona a função "handle_not_found" quando o servidor estiver offline
   server.onNotFound(handleNotFound);
