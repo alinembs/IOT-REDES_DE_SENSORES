@@ -241,6 +241,19 @@ void appendFile(fs::FS &fs, const char *path, const char *message)
   }
   file.close();
 }
+// Pega a Data-Hora Atual e salva em uma Variavel Global
+String data_now()
+{
+  DateTime now = rtc.now();
+  // Formato da data: DD/MM/AAAA
+  String data = String(now.day()) + "/" + String(now.month()) + "/" + String(now.year());
+  // Serial.println(data);
+  //  Formato da hora: HH:MM:SS
+  String hora = String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
+  // Serial.println(hora);
+  return String(data + '~' + hora);
+}
+
 // Inicializa o RTC e Ajusta a Data-Hora do Esp32 se for a primeira vez
 void init_RTC()
 {
@@ -265,22 +278,12 @@ void init_RTC()
     }
     preferences.putBool("data_modulo", data_modulo);
     preferences.end();
+    Serial.println("RTC Inicializado!");
+    Serial.println(data_now());
     Status_RTC = "TRUE";
   }
 }
 
-// Pega a Data-Hora Atual e salva em uma Variavel Global
-String data_now()
-{
-  DateTime now = rtc.now();
-  // Formato da data: DD/MM/AAAA
-  String data = String(now.day()) + "/" + String(now.month()) + "/" + String(now.year());
-  // Serial.println(data);
-  //  Formato da hora: HH:MM:SS
-  String hora = String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
-  // Serial.println(hora);
-  return String(data + '~' + hora);
-}
 
 #define servername "MWSN" // Define the name to server...
 
